@@ -21,72 +21,87 @@
 
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Guru</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Siswa</h6>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('master_guru.store')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('master_siswa.update', $siswa->id)}}" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Nama Guru</label>
-                                <input class="form-control" name="nama" placeholder="Rinaldi ...">
+                                <label>Nama Lengkap</label>
+                                <input class="form-control" name="nama" value="{{$siswa->nama }}">
+                                @error('nama')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>NIP</label>
-                                <input class="form-control" name="nip" placeholder="01...">
-                                <small>NIP tidak bisa diubah setelah disimpan</small>
+                                <label>NIS</label>
+                                <input class="form-control" name="nis" value="{{$siswa->nis }}" readonly>
+                                @error('nis')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tempat Lahir</label>
-                                <input class="form-control" name="tempat_lahir" placeholder="Medan">
+                                <input class="form-control" name="tempat_lahir" @if($siswa->tempat_lahir != null)
+                                value="{{ $siswa->tempat_lahir }}" @else placeholder="Medan" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tanggal Lahir</label>
-                                <input type='date' name='tanggal_lahir' class='form-control'>
+                                <input type='date' name='tanggal_lahir' class='form-control' @if($siswa->tanggal_lahir
+                                != null)
+                                value="{{ $siswa->tanggal_lahir }}" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jenis_kelamin">
-                                    <option hidden>Pilih Jenis Kelamin</option>
-                                    <option value="Laki-Laki">Laki Laki</option>
-                                    <option value="Perempuan">Perempuan</option>
+                                <select class="form-control select-jeniskel" name="jenis_kelamin">
+                                    <option value="Laki-Laki" @if($siswa->jenis_kelamin == 'Laki-Laki')
+                                        selected="selected" @endif>Laki Laki</option>
+                                    <option value="Perempuan" @if($siswa->jenis_kelamin == 'Perempuan')
+                                        selected="selected" @endif>Perempuan</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Agama</label>
-                                <input class="form-control" name="agama" placeholder="Islam">
+                                <input class="form-control" name="agama" @if($siswa->agama != null)
+                                value="{{ $siswa->agama }}" @else placeholder="Islam" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Alamat Lengkap</label>
-                                <textarea class=" form-control" placeholder="Jalan ..." name="alamat"></textarea>
+                                <textarea class=" form-control"
+                                    @if($siswa->alamat == null)  placeholder="Jalan ..." @endif name="alamat">@if($siswa->alamat != null){{ $siswa->alamat }} @endif</textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nomor Telpon/HP</label>
-                                <input class="form-control" name="no_hp" placeholder="08...">
+                                <input class="form-control" name="no_hp" @if($siswa->no_hp != null)
+                                value="{{ $siswa->no_hp }}" @else placeholder="08..." @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Mata Pelajaran</label>
-                                <select class="form-control select-mapel" name="id_mata_pelajaran">
-                                    <option hidden>Pilih Mata Pelajaran</option>
-                                    @foreach ($mapels as $mapel)
-                                    <option value="{{ $mapel->id }}">{{ $mapel->kelas }} {{$mapel->nama }}</option>
+                                <label>kelas</label>
+                                <select class="form-control select-kelas" name="kelas">
+                                    @foreach ($kelases as $kelas)
+                                    <option value="{{ $kelas->id }}" @if($kelas->id == $siswa->id_kelas)
+                                        selected= "selected" @endif>{{ $kelas->kelas }} {{$kelas->nama }}
+                                        {{ $kelas->rombel }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -94,7 +109,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input class="form-control" name="email" placeholder="...@gmail.com">
+                                <input class="form-control" name="email" @if($siswa->email
+                                != null)
+                                value="{{ $siswa->email }}" @else placeholder="...@gmail.com" @endif>
                             </div>
                         </div>
 
@@ -120,7 +137,22 @@
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('.select-mapel').select2({
+    <?php if ($siswa->jenis_kelamin == null) { ?>
+    $(".select-jeniskel").val(null).trigger('change');
+    <?php } ?>
+    <?php if ($siswa->id_kelas == null) { ?>
+    $(".select-kelas").val(null).trigger('change');
+    <?php } ?>
+    $('.select-kelas').select2({
+        val: '',
+        placeholder: "Pilih Kelas",
+        theme: 'bootstrap4',
+        width: 'style',
+    });
+    $('.select-jeniskel').select2({
+        minimumResultsForSearch: Infinity,
+        val: '',
+        placeholder: "Pilih Jenis Kelamin",
         theme: 'bootstrap4',
         width: 'style',
     });

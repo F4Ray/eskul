@@ -21,23 +21,29 @@
 
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Guru</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Siswa</h6>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('master_guru.store')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('master_siswa.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Nama Guru</label>
+                                <label>Nama Lengkap</label>
                                 <input class="form-control" name="nama" placeholder="Rinaldi ...">
+                                @error('nama')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>NIP</label>
-                                <input class="form-control" name="nip" placeholder="01...">
-                                <small>NIP tidak bisa diubah setelah disimpan</small>
+                                <label>NIS</label>
+                                <input class="form-control" name="nis" placeholder="01...">
+                                <small>NIS tidak bisa diubah setelah disimpan</small>
+                                @error('nis')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -55,8 +61,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jenis_kelamin">
-                                    <option hidden>Pilih Jenis Kelamin</option>
+                                <select class="form-control select-jeniskel" name="jenis_kelamin">
                                     <option value="Laki-Laki">Laki Laki</option>
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
@@ -82,11 +87,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Mata Pelajaran</label>
-                                <select class="form-control select-mapel" name="id_mata_pelajaran">
-                                    <option hidden>Pilih Mata Pelajaran</option>
-                                    @foreach ($mapels as $mapel)
-                                    <option value="{{ $mapel->id }}">{{ $mapel->kelas }} {{$mapel->nama }}</option>
+                                <label>kelas</label>
+                                <select class="form-control select-kelas" name="kelas">
+                                    @foreach ($kelases as $kelas)
+                                    <option value="{{ $kelas->id }}">{{ $kelas->kelas }} {{$kelas->nama }}
+                                        {{ $kelas->rombel }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -120,7 +126,18 @@
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('.select-mapel').select2({
+    $(".select-kelas").val("");
+    $(".select-jeniskel").val("");
+    $('.select-kelas').select2({
+        val: '',
+        placeholder: "Pilih Kelas",
+        theme: 'bootstrap4',
+        width: 'style',
+    });
+    $('.select-jeniskel').select2({
+        minimumResultsForSearch: Infinity,
+        val: '',
+        placeholder: "Pilih Jenis Kelamin",
         theme: 'bootstrap4',
         width: 'style',
     });

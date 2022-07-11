@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MasterGuruController;
+use App\Http\Controllers\MasterKelasController;
 use App\Http\Controllers\MasterMapelController;
+use App\Http\Controllers\MasterSiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::resource('master_guru', MasterGuruController::class);
     Route::resource('master_mapel', MasterMapelController::class);
+    Route::resource('master_siswa', MasterSiswaController::class);
+    Route::resource('master_kelas', MasterKelasController::class);
 });
 
 /*------------------------------------------

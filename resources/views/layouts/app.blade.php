@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard &mdash; RUBERFOMIK</title>
+    <title>Dashboard &mdash; E-Skul</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/school.svg') }}" type="image/x-icon">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -69,10 +69,10 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html">RUBERFOMIK</a>
+                        <a href="index.html">E-Skul</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="index.html">RUB</a>
+                        <a href="index.html">ES</a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">MAIN MENU</li>
@@ -86,12 +86,20 @@
 
                             <ul class="dropdown-menu">
 
-                                <li class="{{ setActive('admin/role') }}"><a class="nav-link"
+                                <li class="{{ setActive('master_guru') }}"><a class="nav-link"
                                         href="{{ route('master_guru.index') }}"><i class="fas fa-unlock"></i>Guru</a>
                                 </li>
-                                <li class="{{ setActive('admin/role') }}"><a class="nav-link"
+                                <li class="{{ setActive('master_mapel') }}"><a class="nav-link"
                                         href="{{ route('master_mapel.index') }}"><i class="fas fa-book"></i>Mata
                                         Pelajaran</a>
+                                </li>
+                                <li class="{{ setActive('master_siswa') }}"><a class="nav-link"
+                                        href="{{ route('master_siswa.index') }}"><i
+                                            class="fas fa-user-friends"></i>Siswa</a>
+                                </li>
+                                <li class="{{ setActive('master_kelas') }}"><a class="nav-link"
+                                        href="{{ route('master_kelas.index') }}"><i
+                                            class="fas fa-chalkboard-teacher"></i>Kelas</a>
                                 </li>
 
 
