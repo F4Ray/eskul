@@ -43,6 +43,7 @@ class MasterMapelController extends Controller
     public function create()
     {
         $mapelTerakhir = Mapel::latest()->first();
+        $kode = '0000000000';
         if ($mapelTerakhir == null) {
             $jadiKode = '00001';
         } else {
