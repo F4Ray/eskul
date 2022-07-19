@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MasterGuruController;
+use App\Http\Controllers\MasterJadwalPelajaranController;
 use App\Http\Controllers\MasterKelasController;
 use App\Http\Controllers\MasterMapelController;
 use App\Http\Controllers\MasterSiswaController;
@@ -47,6 +48,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('master_mapel', MasterMapelController::class);
     Route::resource('master_siswa', MasterSiswaController::class);
     Route::resource('master_kelas', MasterKelasController::class);
+    Route::resource('master_jadwal_pelajaran', MasterJadwalPelajaranController::class);
+
+    Route::group(['as' => 'master_jadwal_pelajaran.'], function () {
+        Route::post('ajax_kelas', [MasterJadwalPelajaranController::class, 'ajaxKelas'])->name('ajax_kelas');
+        Route::post('ajax_guru', [MasterJadwalPelajaranController::class, 'ajaxGuru'])->name('ajax_guru');
+    });
 });
 
 /*------------------------------------------

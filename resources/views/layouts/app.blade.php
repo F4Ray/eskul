@@ -101,6 +101,10 @@
                                         href="{{ route('master_kelas.index') }}"><i
                                             class="fas fa-chalkboard-teacher"></i>Kelas</a>
                                 </li>
+                                <li class="{{ setActive('master_jadwal_pelajaran') }}"><a class="nav-link"
+                                        href="{{ route('master_jadwal_pelajaran.index') }}"><i
+                                            class="fas fa-calendar-alt"></i>Jadwal</a>
+                                </li>
 
 
                                 <!-- 
