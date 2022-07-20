@@ -31,7 +31,7 @@ Auth::routes();
 All Normal Users Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:user'])->group(function () {
+Route::middleware(['auth', 'user-access:siswa'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });

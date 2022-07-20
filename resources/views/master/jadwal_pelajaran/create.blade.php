@@ -37,7 +37,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Tambah Data Jadwal Pelajaran</h6>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('master_jadwal_pelajaran.update')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('master_jadwal_pelajaran.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">

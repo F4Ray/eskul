@@ -109,7 +109,7 @@ class MasterJadwalPelajaranController extends Controller
      */
     public function store(Request $request)
     {
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         // dd($request->all());
         $validated = $request->validate(
             [
