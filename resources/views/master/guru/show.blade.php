@@ -45,8 +45,16 @@
                             <div class="col-md-6">
                                 <p>Email : {{$guru->email}}</p>
                             </div>
-                            <div class="col-md-6">
-                                <p>Mata Pelajaran : {{ $guru->mapel->kelas }} {{$guru->mapel->nama}} </p>
+                            <div class="col-md-6 mb-3">
+                                <div class="row">
+                                    <div class="col-md-4" style="margin-right: 0px;padding-right:0px">Mata Pelajaran :
+                                    </div>
+                                    <div class="col-md-8" style="padding-left: 0px;">
+                                        @foreach($guru->mapel as $mapel)
+                                        <li class="mt-0"> {{$mapel->kelas }} {{$mapel->nama}} </li>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

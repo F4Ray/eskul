@@ -43,6 +43,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Username</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">NIP</th>
                                         <!-- <th scope="col">Mata Pelajaran</th> -->
@@ -80,6 +81,10 @@ $(document).ready(function() {
                     name: 'DT_RowIndex'
                 },
                 {
+                    data: 'username',
+                    name: 'username'
+                },
+                {
                     data: 'nama',
                     name: 'nama'
                 },
@@ -87,10 +92,6 @@ $(document).ready(function() {
                     data: 'nip',
                     name: 'nip'
                 },
-                // {
-                //     data: 'mapelnya',
-                //     name: 'mapelnya'
-                // },
                 {
                     data: 'detail',
                     name: 'detail',

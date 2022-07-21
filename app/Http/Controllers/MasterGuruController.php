@@ -17,17 +17,15 @@ class MasterGuruController extends Controller
      */
     public function index(Request $request)
     {
+        // $data = Guru::latest()->get();
+        // dd($data->user->username);
         if ($request->ajax()) {
             $data = Guru::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                // ->addColumn('mapelnya', function ($row) {
-                //     if ($row->id_mata_pelajaran == null) {
-                //         return "-";
-                //     } else {
-                //         return $row->mapel->kelas . " " . $row->mapel->nama;
-                //     }
-                // })
+                ->addColumn('username', function ($row) {
+                    return $row->user->username;
+                })
                 ->addColumn('detail', function ($row) {
                     $detailBtn = '<a href="' . route('master_guru.show', $row->id) . '" class="btn btn-block btn-info btn-sm">Lihat Detail</a>';
                     return $detailBtn;
@@ -91,10 +89,10 @@ class MasterGuruController extends Controller
         $validated = $request->validate(
             [
                 'nama' => 'required',
-                'nip' => 'required|unique:guru|numeric',
+                'nip' => 'unique:guru|numeric',
             ],
             [
-                'nip.unique' => 'NIP sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.',
+                'nip.unique' => 'NIP sudah digunakan.',
                 'nip.numeric' => 'NIP hanya boleh angka.'
             ]
         );
@@ -149,13 +147,33 @@ class MasterGuruController extends Controller
      */
     public function edit($id)
     {
+        $guruTerakhir = User::where('id_role', 2)->latest()->first();
+
+        $kode = '0000000000';
+        if ($guruTerakhir == null) {
+            $jadiKode = '00001';
+        } else {
+            $kode = $guruTerakhir->username + 1;
+        }
+
+        if (strlen($kode) == 1) {
+            $jadiKode = "0000" . $kode;
+        } else if (strlen($kode) == 2) {
+            $jadiKode = "000" . $kode;
+        } else if (strlen($kode) == 3) {
+            $jadiKode = "00" . $kode;
+        } else if (strlen($kode) == 4) {
+            $jadiKode = "0" . $kode;
+        } else if (strlen($kode) == 5) {
+            $jadiKode = $kode;
+        }
         $guru = Guru::find($id);
         $guruArray = [];
         foreach ($guru->mapel as $mapel) {
             array_push($guruArray, $mapel->id);
         }
         $mapels = Mapel::all();
-        return view('master.guru.update', compact('guru', 'mapels', 'guruArray'));
+        return view('master.guru.update', compact('guru', 'mapels', 'guruArray', 'jadiKode'));
     }
 
     /**
@@ -169,6 +187,7 @@ class MasterGuruController extends Controller
     {
 
         $guru = Guru::findOrFail($id);
+        $guru->nip = $request->nip;
         $guru->nama = $request->nama;
         $guru->tempat_lahir = $request->tempat_lahir;
         $guru->tanggal_lahir = $request->tanggal_lahir;

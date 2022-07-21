@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2-bootstrap4.css') }}" />
 <style>
-    .select2-selection__rendered {
-        margin: 4.5px;
-    }
+.select2-selection__rendered {
+    margin: 4.5px;
+}
 </style>
 @endsection
 @section('content')
@@ -30,6 +30,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Username</label>
+                                <input class="form-control" name="username" value="{{ $jadiKode }}" readonly>
+                                <small>Username tidak dapat diubah</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label>Nama Guru</label>
                                 <input class="form-control" name="nama" value="{{ $guru->nama }}">
                             </div>
@@ -37,8 +44,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>NIP</label>
-                                <input class="form-control" name="nip" value="{{ $guru->nip }}" readonly>
-                                <small>NIP tidak dapat diubah</small>
+                                <input class="form-control" name="nip" value="{{ $guru->nip }}">
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -50,7 +57,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tanggal Lahir</label>
-                                <input type='date' name='tanggal_lahir' class='form-control' value="{{ $guru->tanggal_lahir }}">
+                                <input type='date' name='tanggal_lahir' class='form-control'
+                                    value="{{ $guru->tanggal_lahir }}">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -73,7 +81,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Alamat Lengkap</label>
-                                <textarea class=" form-control" placeholder="Jalan ..." name="alamat">{{ $guru->alamat }}</textarea>
+                                <textarea class=" form-control" placeholder="Jalan ..."
+                                    name="alamat">{{ $guru->alamat }}</textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -85,12 +94,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mata Pelajaran</label>
-                                <select class="form-control select-mapel" name="id_mata_pelajaran[]" multiple="multiple">
+                                <select class="form-control select-mapel" name="id_mata_pelajaran[]"
+                                    multiple="multiple">
                                     @foreach ($mapels as $mapel)
                                     <option value="{{ $mapel->id }}">{{ $mapel->kelas }} {{$mapel->nama }}</option>
                                     @endforeach
                                 </select>
-                                <small>Jika tidak ada mata pelajaran yang sesuai, tambah mata pelajaran <a href="{{ route('master_mapel.create') }}">disini</a></small>
+                                <small>Jika tidak ada mata pelajaran yang sesuai, tambah mata pelajaran <a
+                                        href="{{ route('master_mapel.create') }}">disini</a></small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -121,31 +132,31 @@
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        // $('.select-mapel').val(["2", "3"]).trigger('change');
+    // $('.select-mapel').val(["2", "3"]).trigger('change');
 
-        <?php
+    <?php
         if ($guru->mapel != null) {
         ?>
-            var guruArray = @json($guruArray);
-            $('.select-mapel').val(guruArray).trigger('change');
-        <?php
+    var guruArray = @json($guruArray);
+    $('.select-mapel').val(guruArray).trigger('change');
+    <?php
         }
         ?>
-        if (guruArray.length === 0) {
-            $('.select-mapel').select2({
-                placeholder: 'Klik untuk memilih',
-                theme: 'bootstrap4',
-                width: 'style',
-            });
-        } else {
-            $('.select-mapel').select2({
-                theme: 'bootstrap4',
-                width: 'style',
-            });
-        }
-    });
+    if (guruArray.length === 0) {
+        $('.select-mapel').select2({
+            placeholder: 'Klik untuk memilih',
+            theme: 'bootstrap4',
+            width: 'style',
+        });
+    } else {
+        $('.select-mapel').select2({
+            theme: 'bootstrap4',
+            width: 'style',
+        });
+    }
+});
 </script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection
