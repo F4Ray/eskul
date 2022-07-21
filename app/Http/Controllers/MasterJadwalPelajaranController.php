@@ -78,6 +78,7 @@ class MasterJadwalPelajaranController extends Controller
      */
     public function create(Request $request)
     {
+
         $kelases = Kelas::all();
         $mapels = Mapel::all();
         return view('master.jadwal_pelajaran.create', compact('kelases', 'mapels'));
@@ -96,7 +97,9 @@ class MasterJadwalPelajaranController extends Controller
     public function ajaxGuru(Request $request)
     {
         if ($request->ajax()) {
-            $gurunya = Guru::where('id_mata_pelajaran', $request->id_mata_pelajaran)->get();
+            // $gurunya = Guru::where('id_mata_pelajaran', $request->id_mata_pelajaran)->get();
+            $mapel = Mapel::find($request->id_mata_pelajaran);
+            $gurunya = $mapel->guru;
             $data = view('master.jadwal_pelajaran.ajax-guru', compact('gurunya'))->render();
             return response()->json(['options' => $data]);
         }
@@ -278,6 +281,7 @@ class MasterJadwalPelajaranController extends Controller
      */
     public function edit($id)
     {
+        // $gurunya = Guru::where('id_mata_pelajaran', 8)->get();
         $jadwal = JadwalPelajaran::findOrFail($id);
         $mapelnya = Mapel::where('kelas', $jadwal->kelas->kelas)->get();
         if ($jadwal->id_guru != null) {

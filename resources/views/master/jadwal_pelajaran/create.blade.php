@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2-bootstrap4.css') }}" />
 <style>
-.select2-selection__rendered {
-    margin: 4.5px;
-}
+    .select2-selection__rendered {
+        margin: 4.5px;
+    }
 </style>
 @endsection
 @section('content')
@@ -130,52 +130,54 @@
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-$(document).ready(function() {
-    $('.select-kelas').select2({
-        theme: 'bootstrap4',
-        width: 'style',
+    $(document).ready(function() {
+        $('.select-kelas').select2({
+            theme: 'bootstrap4',
+            width: 'style',
+        });
+        $('.select-mapel').select2({
+            theme: 'bootstrap4',
+            width: 'style',
+        });
+        $('.select-guru').select2({
+            theme: 'bootstrap4',
+            width: 'style',
+        });
     });
-    $('.select-mapel').select2({
-        theme: 'bootstrap4',
-        width: 'style',
+    $("select[name='id_kelas']").change(function() {
+        var id_kelas = $(this).val();
+        var token = $("input[name='_token']").val();
+        $.ajax({
+            url: "<?php echo route('master_jadwal_pelajaran.ajax_kelas') ?>",
+            method: 'POST',
+            data: {
+                id_kelas: id_kelas,
+                _token: token
+            },
+            success: function(data) {
+                $("select[name='id_mata_pelajaran'").attr("data-placeholder", "Pilih mata pelajaran");
+                // $("select[name='id_mata_pelajaran'").val(null).trigger('change');
+                $("select[name='id_mata_pelajaran'").html(data.options);
+            }
+        });
     });
-    $('.select-guru').select2({
-        theme: 'bootstrap4',
-        width: 'style',
+    $("select[name='id_mata_pelajaran']").change(function() {
+        var id_mata_pelajaran = $(this).val();
+        var token = $("input[name='_token']").val();
+        $.ajax({
+            url: "<?php echo route('master_jadwal_pelajaran.ajax_guru') ?>",
+            method: 'POST',
+            data: {
+                id_mata_pelajaran: id_mata_pelajaran,
+                _token: token
+            },
+            success: function(data) {
+                $("select[name='id_guru'").attr("data-placeholder", "Pilih guru");
+                // $("select[name='id_guru'").val(null).trigger('change');
+                $("select[name='id_guru'").html(data.options);
+            }
+        });
     });
-});
-$("select[name='id_kelas']").change(function() {
-    var id_kelas = $(this).val();
-    var token = $("input[name='_token']").val();
-    $.ajax({
-        url: "<?php echo route('master_jadwal_pelajaran.ajax_kelas') ?>",
-        method: 'POST',
-        data: {
-            id_kelas: id_kelas,
-            _token: token
-        },
-        success: function(data) {
-            $("select[name='id_mata_pelajaran'").val(null).trigger('change');
-            $("select[name='id_mata_pelajaran'").html(data.options);
-        }
-    });
-});
-$("select[name='id_mata_pelajaran']").change(function() {
-    var id_mata_pelajaran = $(this).val();
-    var token = $("input[name='_token']").val();
-    $.ajax({
-        url: "<?php echo route('master_jadwal_pelajaran.ajax_guru') ?>",
-        method: 'POST',
-        data: {
-            id_mata_pelajaran: id_mata_pelajaran,
-            _token: token
-        },
-        success: function(data) {
-            $("select[name='id_guru'").val(null).trigger('change');
-            $("select[name='id_guru'").html(data.options);
-        }
-    });
-});
 </script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection
