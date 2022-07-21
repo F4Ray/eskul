@@ -18,6 +18,20 @@
         <div class="section-header">
             <h1>Master Data</h1>
         </div>
+        <div class="row">
+            @if(count($errors) > 0 )
+            <div class="col-md-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    {{$errors->first()}}
+
+                </div>
+            </div>
+            @endif
+        </div>
 
         <div class="card shadow mb-4">
             <div class="card-header">
@@ -27,6 +41,12 @@
                 <form method="post" action="{{route('master_guru.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input class="form-control" name="username" value="{{ $jadiKode }}" readonly>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nama Guru</label>
@@ -83,8 +103,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mata Pelajaran</label>
-                                <select class="form-control select-mapel" name="id_mata_pelajaran">
-                                    <option hidden>Pilih Mata Pelajaran</option>
+                                <select class="form-control select-mapel" name="id_mata_pelajaran[]"
+                                    multiple="multiple">
                                     @foreach ($mapels as $mapel)
                                     <option value="{{ $mapel->id }}">{{ $mapel->kelas }} {{$mapel->nama }}</option>
                                     @endforeach
@@ -121,6 +141,7 @@
 <script>
 $(document).ready(function() {
     $('.select-mapel').select2({
+        placeholder: 'Klik untuk memilih',
         theme: 'bootstrap4',
         width: 'style',
     });

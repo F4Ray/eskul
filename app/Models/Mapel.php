@@ -16,4 +16,14 @@ class Mapel extends Model
 
     ];
     use HasFactory;
+
+    /**
+     * The guru that belong to the Mapel
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function guru()
+    {
+        return $this->belongsToMany(Guru::class, 'guru_mapel', 'mapel_id', 'guru_id');
+    }
 }

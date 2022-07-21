@@ -6,6 +6,11 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2-bootstrap4.css') }}" />
+<style>
+    .select2-selection__rendered {
+        margin: 4.5px;
+    }
+</style>
 @endsection
 @section('content')
 <div class="main-content">
@@ -45,8 +50,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tanggal Lahir</label>
-                                <input type='date' name='tanggal_lahir' class='form-control'
-                                    value="{{ $guru->tanggal_lahir }}">
+                                <input type='date' name='tanggal_lahir' class='form-control' value="{{ $guru->tanggal_lahir }}">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -69,8 +73,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Alamat Lengkap</label>
-                                <textarea class=" form-control" placeholder="Jalan ..."
-                                    name="alamat">{{ $guru->alamat }}</textarea>
+                                <textarea class=" form-control" placeholder="Jalan ..." name="alamat">{{ $guru->alamat }}</textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -82,21 +85,12 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mata Pelajaran</label>
-                                <select class="form-control select-mapel" name="id_mata_pelajaran">
-                                    @if($guru->id_mata_pelajaran != null)
-                                    <option value="{{ $guru->id_mata_pelajaran }}" hidden>{{$guru->mapel->kelas}}
-                                        {{ $guru->mapel->nama }}
-                                    </option>
-                                    @else
-                                    <option hidden>Pilih Mata Pelajaran
-                                    </option>
-                                    @endif
+                                <select class="form-control select-mapel" name="id_mata_pelajaran[]" multiple="multiple">
                                     @foreach ($mapels as $mapel)
                                     <option value="{{ $mapel->id }}">{{ $mapel->kelas }} {{$mapel->nama }}</option>
                                     @endforeach
                                 </select>
-                                <small>Jika tidak ada mata pelajaran yang sesuai, tambah mata pelajaran <a
-                                        href="{{ route('master_mapel.create') }}">disini</a></small>
+                                <small>Jika tidak ada mata pelajaran yang sesuai, tambah mata pelajaran <a href="{{ route('master_mapel.create') }}">disini</a></small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -127,12 +121,31 @@
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-$(document).ready(function() {
-    $('.select-mapel').select2({
-        theme: 'bootstrap4',
-        width: 'style',
+    $(document).ready(function() {
+
+        // $('.select-mapel').val(["2", "3"]).trigger('change');
+
+        <?php
+        if ($guru->mapel != null) {
+        ?>
+            var guruArray = @json($guruArray);
+            $('.select-mapel').val(guruArray).trigger('change');
+        <?php
+        }
+        ?>
+        if (guruArray.length === 0) {
+            $('.select-mapel').select2({
+                placeholder: 'Klik untuk memilih',
+                theme: 'bootstrap4',
+                width: 'style',
+            });
+        } else {
+            $('.select-mapel').select2({
+                theme: 'bootstrap4',
+                width: 'style',
+            });
+        }
     });
-});
 </script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection

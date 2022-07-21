@@ -21,13 +21,13 @@ class MasterGuruController extends Controller
             $data = Guru::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('mapelnya', function ($row) {
-                    if ($row->id_mata_pelajaran == null) {
-                        return "-";
-                    } else {
-                        return $row->mapel->kelas . " " . $row->mapel->nama;
-                    }
-                })
+                // ->addColumn('mapelnya', function ($row) {
+                //     if ($row->id_mata_pelajaran == null) {
+                //         return "-";
+                //     } else {
+                //         return $row->mapel->kelas . " " . $row->mapel->nama;
+                //     }
+                // })
                 ->addColumn('detail', function ($row) {
                     $detailBtn = '<a href="' . route('master_guru.show', $row->id) . '" class="btn btn-block btn-info btn-sm">Lihat Detail</a>';
                     return $detailBtn;
@@ -55,8 +55,28 @@ class MasterGuruController extends Controller
      */
     public function create()
     {
+        $guruTerakhir = User::where('id_role', 2)->latest()->first();
+
+        $kode = '0000000000';
+        if ($guruTerakhir == null) {
+            $jadiKode = '00001';
+        } else {
+            $kode = $guruTerakhir->username + 1;
+        }
+
+        if (strlen($kode) == 1) {
+            $jadiKode = "0000" . $kode;
+        } else if (strlen($kode) == 2) {
+            $jadiKode = "000" . $kode;
+        } else if (strlen($kode) == 3) {
+            $jadiKode = "00" . $kode;
+        } else if (strlen($kode) == 4) {
+            $jadiKode = "0" . $kode;
+        } else if (strlen($kode) == 5) {
+            $jadiKode = $kode;
+        }
         $mapels = Mapel::all();
-        return view('master.guru.create', compact('mapels'));
+        return view('master.guru.create', compact('mapels', 'jadiKode'));
     }
 
     /**
@@ -71,15 +91,17 @@ class MasterGuruController extends Controller
         $validated = $request->validate(
             [
                 'nama' => 'required',
-                'nip' => 'required|unique:guru',
+                'nip' => 'required|unique:guru|numeric',
             ],
             [
-                'nip' => 'NIP sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.'
+                'nip.unique' => 'NIP sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.',
+                'nip.numeric' => 'NIP hanya boleh angka.'
             ]
         );
+        // dd($request->all());
 
         $user = new User;
-        $user->username = $request->nip;
+        $user->username = $request->username;
         $user->id_role = 2;
         $user->password = bcrypt('123456');
 
@@ -94,9 +116,10 @@ class MasterGuruController extends Controller
         $guru->no_hp = $request->no_hp;
         $guru->email = $request->email;
         $guru->foto = $request->foto;
-        $guru->id_mata_pelajaran = $request->id_mata_pelajaran;
+        $guru->id_mata_pelajaran = 1111;
 
         $guru->save();
+        $guru->mapel()->attach($request->id_mata_pelajaran);
         $guru->user()->save($user);
 
         return redirect()->route('master_guru.index')
@@ -127,8 +150,12 @@ class MasterGuruController extends Controller
     public function edit($id)
     {
         $guru = Guru::find($id);
+        $guruArray = [];
+        foreach ($guru->mapel as $mapel) {
+            array_push($guruArray, $mapel->id);
+        }
         $mapels = Mapel::all();
-        return view('master.guru.update', compact('guru', 'mapels'));
+        return view('master.guru.update', compact('guru', 'mapels', 'guruArray'));
     }
 
     /**
@@ -149,10 +176,13 @@ class MasterGuruController extends Controller
         $guru->agama = $request->agama;
         $guru->alamat = $request->alamat;
         $guru->no_hp = $request->no_hp;
-        $guru->id_mata_pelajaran = $request->id_mata_pelajaran;
+        $guru->id_mata_pelajaran = 1111;
         $guru->email = $request->email;
 
+
         $guru->save();
+
+        $guru->mapel()->sync($request->id_mata_pelajaran);
 
         return redirect()->route('master_guru.index')
             ->with('success', 'Data guru berhasil diedit');

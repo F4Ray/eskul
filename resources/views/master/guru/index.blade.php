@@ -45,7 +45,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">NIP</th>
-                                        <th scope="col">Mata Pelajaran</th>
+                                        <!-- <th scope="col">Mata Pelajaran</th> -->
                                         <th scope="col">Detail</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
@@ -87,10 +87,10 @@ $(document).ready(function() {
                     data: 'nip',
                     name: 'nip'
                 },
-                {
-                    data: 'mapelnya',
-                    name: 'mapelnya'
-                },
+                // {
+                //     data: 'mapelnya',
+                //     name: 'mapelnya'
+                // },
                 {
                     data: 'detail',
                     name: 'detail',

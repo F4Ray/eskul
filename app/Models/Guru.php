@@ -31,9 +31,19 @@ class Guru extends Model
         return $this->hasOne(User::class, 'id_profile');
     }
 
+    // public function mapel()
+    // {
+    //     return $this->belongsTo(Mapel::class, 'id_mata_pelajaran', 'id');
+    // }
+
+    /**
+     * The mapel that belong to the Guru
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function mapel()
     {
-        return $this->belongsTo(Mapel::class, 'id_mata_pelajaran', 'id');
+        return $this->belongsToMany(Mapel::class, 'guru_mapel', 'guru_id', 'mapel_id');
     }
     /**
      * Get the user that owns the Guru
