@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2-bootstrap4.css') }}" />
 <style>
-    .select2-selection__rendered {
-        margin: 4.5px;
-    }
+.select2-selection__rendered {
+    margin: 4.5px;
+}
 </style>
 @endsection
 @section('content')
@@ -41,6 +41,7 @@
                             <div class="form-group">
                                 <label>NIS</label>
                                 <input class="form-control" name="nis" value="{{$siswa->nis }}" readonly>
+                                <small>NIS sebagai username tidak dapat diubah</small>
                                 @error('nis')
                                 <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                 @enderror
@@ -88,7 +89,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Alamat Lengkap</label>
-                                <textarea class=" form-control" @if($siswa->alamat == null)  placeholder="Jalan ..." @endif name="alamat">@if($siswa->alamat != null){{ $siswa->alamat }} @endif</textarea>
+                                <textarea class=" form-control"
+                                    @if($siswa->alamat == null)  placeholder="Jalan ..." @endif name="alamat">@if($siswa->alamat != null){{ $siswa->alamat }} @endif</textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -141,27 +143,27 @@
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        <?php if ($siswa->jenis_kelamin == null) { ?>
-            $(".select-jeniskel").val(null).trigger('change');
-        <?php } ?>
-        <?php if ($siswa->id_kelas == null) { ?>
-            $(".select-kelas").val(null).trigger('change');
-        <?php } ?>
-        $('.select-kelas').select2({
-            val: '',
-            placeholder: "Pilih Kelas",
-            theme: 'bootstrap4',
-            width: 'style',
-        });
-        $('.select-jeniskel').select2({
-            minimumResultsForSearch: Infinity,
-            val: '',
-            placeholder: "Pilih Jenis Kelamin",
-            theme: 'bootstrap4',
-            width: 'style',
-        });
+$(document).ready(function() {
+    <?php if ($siswa->jenis_kelamin == null) { ?>
+    $(".select-jeniskel").val(null).trigger('change');
+    <?php } ?>
+    <?php if ($siswa->id_kelas == null) { ?>
+    $(".select-kelas").val(null).trigger('change');
+    <?php } ?>
+    $('.select-kelas').select2({
+        val: '',
+        placeholder: "Pilih Kelas",
+        theme: 'bootstrap4',
+        width: 'style',
     });
+    $('.select-jeniskel').select2({
+        minimumResultsForSearch: Infinity,
+        val: '',
+        placeholder: "Pilih Jenis Kelamin",
+        theme: 'bootstrap4',
+        width: 'style',
+    });
+});
 </script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection

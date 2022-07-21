@@ -45,6 +45,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">NIS</th>
+                                        <th scope="col">NISN</th>
                                         <th scope="col">Kelas</th>
                                         <th scope="col">Detail</th>
                                         <th scope="col">Aksi</th>
@@ -86,6 +87,10 @@ $(document).ready(function() {
                 {
                     data: 'nis',
                     name: 'nis'
+                },
+                {
+                    data: 'nisn',
+                    name: 'nisn'
                 },
                 {
                     data: 'kelas',

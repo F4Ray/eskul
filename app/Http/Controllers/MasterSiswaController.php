@@ -82,6 +82,7 @@ class MasterSiswaController extends Controller
             ]
         );
 
+
         $user = new User;
         $user->username = $request->nis;
         $user->id_role = 3;
@@ -144,6 +145,7 @@ class MasterSiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
         $siswa->nama = $request->nama;
+        $siswa->nisn = $request->nisn;
         $siswa->jenis_kelamin = $request->jenis_kelamin;
         $siswa->tempat_lahir = $request->tempat_lahir;
         $siswa->tanggal_lahir = $request->tanggal_lahir;
