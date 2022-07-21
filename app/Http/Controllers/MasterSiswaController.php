@@ -70,10 +70,13 @@ class MasterSiswaController extends Controller
         $validated = $request->validate(
             [
                 'nama' => 'required',
-                'nis' => 'required|unique:siswa',
+                'nis' => 'required|unique:siswa|numeric',
+                'nisn' => 'numeric'
             ],
             [
                 'nis.unique' => 'NIS sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.',
+                'nis.numeric' => 'NIS hanya boleh angka.',
+                'nisn.numeric' => 'NISN hanya boleh angka.',
                 'nis.required' => 'NIS harus diisi',
                 'nama.required' => 'Nama harus diisi'
             ]
@@ -86,6 +89,7 @@ class MasterSiswaController extends Controller
 
         $siswa = new Siswa;
         $siswa->nis = $request->nis;
+        $siswa->nisn = $request->nisn;
         $siswa->nama = $request->nama;
         $siswa->jenis_kelamin = $request->jenis_kelamin;
         $siswa->tempat_lahir = $request->tempat_lahir;
