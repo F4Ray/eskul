@@ -18,5 +18,11 @@ class CreateSiswaSeeder extends Seeder
             'nis' => '0829482291',
             'nama' => 'Ihsanil'
         ]);
+        User::create([
+            'username' => '0829482291',
+            'password' => bcrypt('123456'),
+            'id_profile' => 1,
+            'id_role' => 3
+        ]);
     }
 }

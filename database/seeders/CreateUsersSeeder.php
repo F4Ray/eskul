@@ -23,18 +23,11 @@ class CreateUsersSeeder extends Seeder
             ],
             [
 
-                'username' => 'Guru',
-                'id_role' => 2,
+                'username' => 'admin2',
+                'id_role' => 1,
                 'password' => bcrypt('123456'),
                 'id_profile' => 1
-            ],
-            [
-
-                'username' => 'user@itsolutionstuff.com',
-                'id_role' => 3,
-                'password' => bcrypt('123456'),
-                'id_profile' => 1
-            ],
+            ]
         ];
 
         foreach ($users as $key => $user) {
