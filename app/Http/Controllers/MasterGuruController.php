@@ -24,7 +24,8 @@ class MasterGuruController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('username', function ($row) {
-                    return $row->user->username;
+                    $userGuru = User::where('id_profile', $row->id)->where('id_role', 2)->first();
+                    return $userGuru->username;
                 })
                 ->addColumn('detail', function ($row) {
                     $detailBtn = '<a href="' . route('master_guru.show', $row->id) . '" class="btn btn-block btn-info btn-sm">Lihat Detail</a>';
