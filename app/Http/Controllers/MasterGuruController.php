@@ -90,7 +90,7 @@ class MasterGuruController extends Controller
         $validated = $request->validate(
             [
                 'nama' => 'required',
-                'nip' => 'unique:guru|numeric',
+                'nip' => 'unique:guru|numeric|nullable',
             ],
             [
                 'nip.unique' => 'NIP sudah digunakan.',
