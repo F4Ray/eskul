@@ -33,16 +33,13 @@
             <nav class="navbar navbar-expand-lg main-navbar">
                 <form class="form-inline mr-auto">
                     <ul class="navbar-nav mr-3">
-                        <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i
-                                    class="fas fa-bars"></i></a></li>
+                        <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
                     </ul>
                 </form>
                 <ul class="navbar-nav navbar-right">
 
-                    <li class="dropdown"><a href="#" data-toggle="dropdown"
-                            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png') }}"
-                                class="rounded-circle mr-1">
+                    <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                            <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
                             <div class="d-sm-none d-lg-inline-block">Hi,
                                 @if (Auth::user()->role->role == 'admin')
                                 {{ __('Admin') }}
@@ -55,8 +52,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{ route('logout') }}" style="cursor: pointer" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"
-                                class="dropdown-item has-icon text-danger">
+                                                     document.getElementById('logout-form').submit();" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -76,9 +72,18 @@
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">MAIN MENU</li>
-                        <li class="{{ setActive('admin/home') }}"><a class="nav-link"
-                                href="{{ route('admin.home') }}"><i class="fas fa-tachometer-alt"></i>
-                                <span>Dashboard</span></a></li>
+                        @if(Auth::check() && Auth::user()->id_role == 1)
+                        <li class="{{ setActive('admin/home') }}"><a class="nav-link" href="{{ route('admin.home') }}"><i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span></a>
+                        </li>
+                        @elseif(Auth::check() && Auth::user()->id_role == 2)
+                        <li class="{{ setActive('guru/home') }}"><a class="nav-link" href="{{ route('guru.home') }}"><i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span></a>
+                        </li>
+                        <li class="{{ setActive('absensi_guru') }}"><a class="nav-link" href="{{ route('absensi_guru.index') }}"><i class="fas fa-calendar-alt"></i>Absensi</a>
+                        </li>
+                        @endif
+                        @if(Auth::check() && Auth::user()->id_role == 1)
                         <li class="dropdown {{ setActive('master_')  }}">
 
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Master
@@ -86,41 +91,20 @@
 
                             <ul class="dropdown-menu">
 
-                                <li class="{{ setActive('master_guru') }}"><a class="nav-link"
-                                        href="{{ route('master_guru.index') }}"><i class="fas fa-unlock"></i>Guru</a>
+                                <li class="{{ setActive('master_guru') }}"><a class="nav-link" href="{{ route('master_guru.index') }}"><i class="fas fa-unlock"></i>Guru</a>
                                 </li>
-                                <li class="{{ setActive('master_mapel') }}"><a class="nav-link"
-                                        href="{{ route('master_mapel.index') }}"><i class="fas fa-book"></i>Mata
+                                <li class="{{ setActive('master_mapel') }}"><a class="nav-link" href="{{ route('master_mapel.index') }}"><i class="fas fa-book"></i>Mata
                                         Pelajaran</a>
                                 </li>
-                                <li class="{{ setActive('master_siswa') }}"><a class="nav-link"
-                                        href="{{ route('master_siswa.index') }}"><i
-                                            class="fas fa-user-friends"></i>Siswa</a>
+                                <li class="{{ setActive('master_siswa') }}"><a class="nav-link" href="{{ route('master_siswa.index') }}"><i class="fas fa-user-friends"></i>Siswa</a>
                                 </li>
-                                <li class="{{ setActive('master_kelas') }}"><a class="nav-link"
-                                        href="{{ route('master_kelas.index') }}"><i
-                                            class="fas fa-chalkboard-teacher"></i>Kelas</a>
+                                <li class="{{ setActive('master_kelas') }}"><a class="nav-link" href="{{ route('master_kelas.index') }}"><i class="fas fa-chalkboard-teacher"></i>Kelas</a>
                                 </li>
-                                <li class="{{ setActive('master_jadwal_pelajaran') }}"><a class="nav-link"
-                                        href="{{ route('master_jadwal_pelajaran.index') }}"><i
-                                            class="fas fa-calendar-alt"></i>Jadwal</a>
+                                <li class="{{ setActive('master_jadwal_pelajaran') }}"><a class="nav-link" href="{{ route('master_jadwal_pelajaran.index') }}"><i class="fas fa-calendar-alt"></i>Jadwal</a>
                                 </li>
-
-
-                                <!-- 
-                                <li class="{{ setActive('admin/permission') }}"><a class="nav-link" href="#"><i
-                                            class="fas fa-key"></i>
-                                        Permissions</a></li>
-
-
-
-                                <li class="{{ setActive('admin/user') }}"><a class="nav-link" href="#"><i
-                                            class="fas fa-users"></i> Users</a>
-                                </li> -->
-
                             </ul>
                         </li>
-
+                        @endif
 
                     </ul>
                 </aside>
@@ -157,38 +141,38 @@
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
-    //active select2
-    // $(document).ready(function() {
-    //     $('select').select2({
-    //         theme: 'bootstrap4',
-    //         width: 'style',
-    //     });
-    // });
+        //active select2
+        // $(document).ready(function() {
+        //     $('select').select2({
+        //         theme: 'bootstrap4',
+        //         width: 'style',
+        //     });
+        // });
 
-    //flash message
-    // <?php if (session()->has('success')) { ?>
-    // swal({
-    //     type: "success",
-    //     icon: "success",
-    //     title: "BERHASIL!",
-    //     text: "{{ session('success') }}",
-    //     timer: 1500,
-    //     showConfirmButton: false,
-    //     showCancelButton: false,
-    //     buttons: false,
-    // });
-    // <?php } elseif (session()->has('error')) { ?>
-    // swal({
-    //     type: "error",
-    //     icon: "error",
-    //     title: "GAGAL!",
-    //     text: "{{ session('error') }}",
-    //     timer: 1500,
-    //     showConfirmButton: false,
-    //     showCancelButton: false,
-    //     buttons: false,
-    // });
-    // <?php } ?>
+        //flash message
+        // <?php if (session()->has('success')) { ?>
+        // swal({
+        //     type: "success",
+        //     icon: "success",
+        //     title: "BERHASIL!",
+        //     text: "{{ session('success') }}",
+        //     timer: 1500,
+        //     showConfirmButton: false,
+        //     showCancelButton: false,
+        //     buttons: false,
+        // });
+        // <?php } elseif (session()->has('error')) { ?>
+        // swal({
+        //     type: "error",
+        //     icon: "error",
+        //     title: "GAGAL!",
+        //     text: "{{ session('error') }}",
+        //     timer: 1500,
+        //     showConfirmButton: false,
+        //     showCancelButton: false,
+        //     buttons: false,
+        // });
+        // <?php } ?>
     </script>
     @yield('internalScript')
 </body>
