@@ -8,6 +8,7 @@ use App\Http\Controllers\MasterJadwalPelajaranController;
 use App\Http\Controllers\MasterKelasController;
 use App\Http\Controllers\MasterMapelController;
 use App\Http\Controllers\MasterSiswaController;
+use App\Http\Controllers\AbsensiGuruController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::resource('master_guru', MasterGuruController::class);
+    Route::resource('absensi_guru', MasterGuruController::class);
     Route::resource('master_mapel', MasterMapelController::class);
     Route::resource('master_siswa', MasterSiswaController::class);
     Route::resource('master_kelas', MasterKelasController::class);
@@ -64,4 +66,5 @@ All Admin Routes List
 Route::middleware(['auth', 'user-access:guru'])->group(function () {
 
     Route::get('/guru/home', [HomeController::class, 'guruHome'])->name('guru.home');
+    Route::resource('absensi_guru', AbsensiGuruController::class, ['only' => ['create', 'store', 'index']]);
 });
