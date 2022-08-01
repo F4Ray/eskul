@@ -10,7 +10,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Master Data</h1>
+            <h1>Data Absensi</h1>
         </div>
         <div class="row">
             @if ($message = Session::get('success'))
