@@ -9,6 +9,7 @@ use App\Http\Controllers\MasterKelasController;
 use App\Http\Controllers\MasterMapelController;
 use App\Http\Controllers\MasterSiswaController;
 use App\Http\Controllers\AbsensiGuruController;
+use App\Http\Controllers\AbsensiSiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,4 +68,5 @@ Route::middleware(['auth', 'user-access:guru'])->group(function () {
 
     Route::get('/guru/home', [HomeController::class, 'guruHome'])->name('guru.home');
     Route::resource('absensi_guru', AbsensiGuruController::class, ['only' => ['create', 'store', 'index']]);
+    Route::resource('absensi_siswa', AbsensiSiswaController::class, ['only' => ['create', 'store', 'index']]);
 });
