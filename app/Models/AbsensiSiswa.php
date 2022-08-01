@@ -17,4 +17,9 @@ class AbsensiSiswa extends Model
         'id_keterangan_absensi'
     ];
     use HasFactory;
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'id_siswa');
+    }
 }

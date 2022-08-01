@@ -101,7 +101,13 @@ class AbsensiSiswaController extends Controller
      */
     public function edit($id)
     {
-        //
+        if ($this->cekLoggedInUser($id) === false) {
+            return response()->json(['You do not have permission to access for this page.']);
+        }
+        $listAbsensi = AbsensiSiswa::where('id_jadwal', $id)->get();
+        $idJadwal = $id;
+
+        return view('absensi.siswa.update', compact('listAbsensi', 'idJadwal'));
     }
 
     /**
@@ -113,7 +119,16 @@ class AbsensiSiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $jadwalnya = JadwalPelajaran::findOrFail($id);
+        $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get();
+        foreach ($siswas as $siswa) {
+            $absensiSiswa = AbsensiSiswa::where('id_siswa', $siswa->id)->where('tanggal', Carbon::now()->format('Y-m-d'))->first();
+            $absensiSiswa->id_keterangan_absensi = $request[$siswa->id];
+            $absensiSiswa->save();
+        }
+        return redirect()->route('absensi_siswa.index')
+        ->with('success', 'Absensi siswa berhasil diubah');
+        
     }
 
     /**
@@ -136,5 +151,16 @@ class AbsensiSiswaController extends Controller
             $result = true;
         }
         return $result;
+    }
+
+    public function cekLoggedInUser($idJadwal)
+    {
+        $loggedInUser = Auth::user();
+        $jadwal = JadwalPelajaran::findOrFail($idJadwal);
+        if ($loggedInUser->guru->id != $jadwal->id_guru) {
+            return false; 
+        }else{
+            return true;
+        }
     }
 }

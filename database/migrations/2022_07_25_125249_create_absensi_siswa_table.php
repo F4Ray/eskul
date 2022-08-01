@@ -20,7 +20,7 @@ class CreateAbsensiSiswaTable extends Migration
             $table->integer('id_jadwal');
             $table->date('tanggal');
             $table->string('tahun_ajaran');
-            $table->integer('id_keterangan_absensi');
+            $table->integer('id_keterangan_absensi')->nullable();
             $table->timestamps();
         });
     }
