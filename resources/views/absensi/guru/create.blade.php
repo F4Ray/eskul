@@ -7,16 +7,16 @@
 <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2-bootstrap4.css') }}" />
 <style>
-.select2-selection__rendered {
-    margin: 4.5px;
-}
+    .select2-selection__rendered {
+        margin: 4.5px;
+    }
 </style>
 @endsection
 @section('content')
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Master Data</h1>
+            <h1>Absensi Guru</h1>
         </div>
         <div class="row">
             @if(count($errors) > 0 )
@@ -56,8 +56,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Tanggal</label>
-                                <input type='date' name='tanggal' class='form-control' value="{{ $tanggalHariIni }}" 
-                                @if (Auth::user()->role->role == 'admin')
+                                <input type='date' name='tanggal' class='form-control' value="{{ $tanggalHariIni }}" @if (Auth::user()->role->role == 'admin')
                                 {{ __('') }}
                                 @else (Auth::user()->role->role == 'guru')
                                 {{ __('readonly') }}
@@ -96,14 +95,14 @@
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
-$(document).ready(function() {
-    $('.select-keterangan').select2({
-        minimumResultsForSearch: Infinity,
-        placeholder: 'Klik untuk memilih',
-        theme: 'bootstrap4',
-        width: 'style',
+    $(document).ready(function() {
+        $('.select-keterangan').select2({
+            minimumResultsForSearch: Infinity,
+            placeholder: 'Klik untuk memilih',
+            theme: 'bootstrap4',
+            width: 'style',
+        });
     });
-});
 </script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection
