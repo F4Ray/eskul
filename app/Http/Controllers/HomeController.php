@@ -49,6 +49,9 @@ class HomeController extends Controller
      */
     public function guruHome()
     {
+        if(auth()->user()->role->role != "guru"){
+            return response()->json(['You do not have permission to access for this page.']);
+        }
         $hari = Carbon::now()->isoFormat('dddd');
         $tanggalHariIni = Carbon::now()->toDateString();
         $absensi = AbsensiGuru::where('id_guru', Auth::user()->guru->id)->where('tanggal', $tanggalHariIni)->get();

@@ -37,38 +37,27 @@
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">
                     @if (Auth::user()->role->role == 'admin')
-                    {{ __('Tambah Data Absensi Guru') }}
+                    {{ __('Edit Data Absensi Guru') }}
                     @else (Auth::user()->role->role == 'guru')
                     {{ __('Isi Absensi Hari Ini') }}
                     @endif
                 </h6>
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('absensi_guru.store')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('absensi_guru.update', $absensi_guru->id)}}" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Nama Guru</label>
-                                @if (Auth::user()->role->role == 'admin')
-                                <select class="form-control select-guru" name="guru">
-                                    @foreach ($guru as $gurunya)
-                                    <option value="{{ $gurunya->id }}">{{ $gurunya->nama }}</option>
-                                    @endforeach
-                                </select>
-                                @else (Auth::user()->role->role == 'guru')
-                                <input class="form-control" name="nama" value="{{ $guru->nama }}" readonly>
-                                @endif
+                                <input class="form-control" name="nama" value="{{ $absensi_guru->guru->nama }}" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Tanggal</label>
-                                @if (Auth::user()->role->role == 'admin')
-                                <input type='date' name='tanggal' class='form-control' max="{{ $tanggalHariIni }}">
-                                @else (Auth::user()->role->role == 'guru')
-                                <input type='date' name='tanggal' class='form-control' value="{{ $tanggalHariIni }}" readonly>
-                                @endif
+                                <label>Tanggal</label>                                
+                                <input type='date' name='tanggal' class='form-control' value="{{ $absensi_guru->tanggal }}" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -104,14 +93,9 @@
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $(".select-guru").val(null).trigger('change');
+        $(".select-keterangan").val({{ $absensi_guru->id_keterangan_absensi }}).trigger('change');
         $('.select-keterangan').select2({
             minimumResultsForSearch: Infinity,
-            placeholder: 'Klik untuk memilih',
-            theme: 'bootstrap4',
-            width: 'style',
-        });
-        $('.select-guru').select2({
             placeholder: 'Klik untuk memilih',
             theme: 'bootstrap4',
             width: 'style',

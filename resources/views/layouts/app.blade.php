@@ -10,6 +10,8 @@
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/modules/fontawesome/css/all.min.css') }}">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css"> -->
+    
 
     <!-- CSS Libraries -->
 
@@ -86,7 +88,7 @@
                         </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)
-                        <li class="dropdown {{ setActive('master_')  }}">
+                        <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }}">
 
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Master
                                     Data</span></a>
@@ -103,6 +105,10 @@
                                 <li class="{{ setActive('master_kelas') }}"><a class="nav-link" href="{{ route('master_kelas.index') }}"><i class="fas fa-chalkboard-teacher"></i>Kelas</a>
                                 </li>
                                 <li class="{{ setActive('master_jadwal_pelajaran') }}"><a class="nav-link" href="{{ route('master_jadwal_pelajaran.index') }}"><i class="fas fa-calendar-alt"></i>Jadwal</a>
+                                </li>
+                                <li class="{{ setActive('absensi_guru') }}"><a class="nav-link" href="{{ route('absensi_guru.index') }}"><i class="fas fa-clipboard-list"></i>Absensi Guru</a>
+                                </li>
+                                <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-clipboard"></i>Absensi Siswa</a>
                                 </li>
                             </ul>
                         </li>

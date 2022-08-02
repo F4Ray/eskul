@@ -52,6 +52,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('master_siswa', MasterSiswaController::class);
     Route::resource('master_kelas', MasterKelasController::class);
     Route::resource('master_jadwal_pelajaran', MasterJadwalPelajaranController::class);
+    Route::resource('absensi_guru', AbsensiGuruController::class);
+    Route::resource('absensi_siswa', AbsensiSiswaController::class);
 
     Route::group(['as' => 'master_jadwal_pelajaran.'], function () {
         Route::post('ajax_kelas', [MasterJadwalPelajaranController::class, 'ajaxKelas'])->name('ajax_kelas');
@@ -64,7 +66,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 All Admin Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:guru'])->group(function () {
+Route::middleware(['auth', 'user-access:admin,guru'])->group(function () {
 
     Route::get('/guru/home', [HomeController::class, 'guruHome'])->name('guru.home');
     Route::resource('absensi_guru', AbsensiGuruController::class, ['only' => ['create', 'store', 'index']]);
