@@ -67,4 +67,27 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Siswa::class, 'id_profile');
     }
+
+    public function isAdmin()
+    {
+        if($this->id_role === 1)
+        { 
+            return true; 
+        } 
+        else 
+        { 
+            return false; 
+        }
+    }
+    public function hasRole()
+    {
+        if($this->id_role === 1)
+        { 
+            return true; 
+        } 
+        else 
+        { 
+            return false; 
+        }
+    }
 }
