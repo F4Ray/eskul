@@ -43,7 +43,7 @@ input[type="radio"]:checked::before{
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Absensi Guru</h1>
+            <h1>Absensi Siswa</h1>
         </div>
         <div class="row">
             @if ($message = Session::get('success'))
@@ -79,18 +79,57 @@ input[type="radio"]:checked::before{
                     @if (Auth::user()->role->role == 'admin')
                     {{ __('Absensi Siswa') }}
                     @else (Auth::user()->role->role == 'guru')
-                    {{ __('Edit Absensi Hari Ini') }}
+                    {{ __('Isi Absensi Hari Ini') }}
                     @endif
                 </h6>
             </div>
             <div class="card-body">
-                
-                <form method="post" action="{{route('absensi_siswa.update', $idJadwal)}}" enctype="multipart/form-data">
+                <form method="get" action="{{route('absensi_siswa.create')}}" enctype="multipart/form-data">
+                    <!-- @csrf -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <select class="form-control select-keterangan" name="jadwal">
+                                    @foreach ($jadwalGuru as $jadwal)
+                                    <option value="{{ $jadwal->id }}">{{ $jadwal->kelas->kelas }} {{ $jadwal->kelas->rombel }} -
+                                        {{ $jadwal->mapel->nama }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        @if (Auth::user()->role->role == 'admin')
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Tanggal</label>
+                                @if(!request()->get('jadwal'))
+                                <input type='date' name='tanggal' max="{{ \Carbon\Carbon::now()->format('Y-m-d'); }}" class='form-control'>
+                                @else
+                                <input type='date' name='tanggal' value="{{ request()->get('tanggal') }}" class='form-control'>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a> -->
+                            <button class="btn btn-primary" type="submit"> Submit </button>
+                        </div>
+                    </div>
+                </form>
+                @if(request()->get('jadwal'))
+                <form method="post" action="{{route('absensi_siswa.store')}}" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    <input name="id_jadwal" value="{{ $jadwalnya->id }}" hidden>
+                    <input name="id_kelas" value="{{ $jadwalnya->id_kelas }}" hidden>
+                    @if (Auth::user()->role->role == 'admin')
+                    <input type="date" name="tanggal" value="{{ request()->get('tanggal') }}" hidden>
+                    @endif
                     <div class="row mt-3">
                         <div class="col-md-12">
-                        <input type='date' name='date' value="{{ request()->route('date') }}" class='form-control' hidden>
+                            @if($siswas != false)
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -103,23 +142,35 @@ input[type="radio"]:checked::before{
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($listAbsensi as $absensi)
+                                        @if($siswas->isEmpty())
+                                        <tr>
+                                            <td colspan="5">Tidak ada siswa di kelas ini</td>
+                                        </tr>
+                                        @else
+                                        @foreach($siswas as $siswa)
                                         <tr class="text-center">
-                                            <td>{{ $absensi->siswa->nama }}</td>
-                                            <td><input class="" type="radio" name="{{ $absensi->id_siswa }}" value="1" @if($absensi->id_keterangan_absensi == 1) checked @endif></td>
-                                            <td><input class="" type="radio" name="{{ $absensi->id_siswa }}" value="2" @if($absensi->id_keterangan_absensi == 2) checked @endif></td>
-                                            <td><input class="" type="radio" name="{{ $absensi->id_siswa }}" value="3" @if($absensi->id_keterangan_absensi == 3) checked @endif></td>
-                                            <td><input class="" type="radio" name="{{ $absensi->id_siswa }}" value="5" @if($absensi->id_keterangan_absensi == 5) checked @endif></td>
+                                            <td>{{ $siswa->nama }}</td>
+                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="1"></td>
+                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="2"></td>
+                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="3"></td>
+                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="5"></td>
                                         </tr>
                                         @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn btn-success float-right" type="submit"> Submit </button>
-                            
+                            @if($siswas->isEmpty())
+                            @else
+                            <button class="btn btn-primary float-right" type="submit"> Submit </button>
+                            @endif
+                            @else
+                            Absensi kelas ini sudah terisi untuk hari ini. <a href="{{route('absensi_siswa.edit', $jadwalnya->id)}}">Klik disini</a> untuk mengubah absensi siswa.
+                            @endif
                         </div>
                     </div>
                 </form>
+                @endif
                     <!-- <div class="col-md-5">
                         <div class="form-group">
                             <label>Nama Guru</label>
@@ -138,5 +189,20 @@ input[type="radio"]:checked::before{
 @endsection
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
+<script>
+$(document).ready(function() {
+    @if(!request()->get('jadwal'))
+    $(".select-keterangan").val(null).trigger('change');
+    @else
+    $(".select-keterangan").val({{ request()->get('jadwal') }}).trigger('change');
+    @endif
+    $('.select-keterangan').select2({
+        minimumResultsForSearch: Infinity,
+        placeholder: 'Klik untuk memilih',
+        theme: 'bootstrap4',
+        width: 'style',
+    });
+});
+</script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection

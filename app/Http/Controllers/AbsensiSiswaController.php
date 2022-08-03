@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AbsensiSiswaController extends Controller
 {
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -19,20 +21,38 @@ class AbsensiSiswaController extends Controller
      */
     public function index(Request $request)
     {
+        $hari = 'Senin';
         
         // $hari = Carbon::now()->isoFormat('dddd');
-        $hari = 'Senin';
-        $jadwalGuru = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->where('hari', $hari)->get();
+        // $hari = 'Senin';
+        
+        if (Auth::user()->role->role === 'guru') {
+            $jadwalGuru = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->where('hari', $hari)->get();
+            $request->tanggal = Carbon::now()->format('Y-m-d');
+        }else{
+            $jadwalGuru = JadwalPelajaran::all();
+        }
         if ($request->get('jadwal')) {
-            $jadwalnya = JadwalPelajaran::findOrFail($request->jadwal);
-            if ($this->cekAbsen($request->jadwal) === false) {
-                $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get();
-            }else{
-                $siswas = false;
+            if (Auth::user()->role->role === 'admin') {
+                $validated = $request->validate(
+                    [
+                        'jadwal' => 'required',
+                        'tanggal' => 'required',
+                    ],
+                    [
+                        'jadwal.required' => 'Kelas tidak boleh kosong.',
+                        'tanggal.required' => 'Tanggal tidak boleh kosong.'
+                    ]
+                );
             }
-            return view('absensi.siswa.index', compact('jadwalGuru', 'siswas','jadwalnya'));
+            $jadwalnya = JadwalPelajaran::findOrFail($request->jadwal);
+            $absens = AbsensiSiswa::where('id_jadwal', $request->jadwal)->where('tanggal', $request->tanggal)->get(); //ambil data absen
+                // $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get();
+            
+            return view('absensi.siswa.index', compact('jadwalGuru', 'absens','jadwalnya'));
         }
         return view('absensi.siswa.index', compact('jadwalGuru'));
+        
         
     }
 
@@ -41,9 +61,26 @@ class AbsensiSiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        
+        // $hari = Carbon::now()->isoFormat('dddd');
+
+        $hari = 'Senin';
+        if (Auth::user()->role->role === 'guru') {
+            $jadwalGuru = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->where('hari', $hari)->get();
+        }else{
+            $jadwalGuru = JadwalPelajaran::all();
+        }
+        if ($request->get('jadwal')) {
+            $jadwalnya = JadwalPelajaran::findOrFail($request->jadwal); 
+            if ($this->cekAbsen($request->jadwal) === false) {  //cek apakah kosong, jika kosong next
+                $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get(); // jika absensi kosong alias belum ada, maka munculkan siswa untuk di absen
+            }else{
+                $siswas = false;
+            }
+            return view('absensi.siswa.create', compact('jadwalGuru', 'siswas','jadwalnya'));
+        }
+        return view('absensi.siswa.create', compact('jadwalGuru'));
     }
 
     /**
@@ -54,6 +91,7 @@ class AbsensiSiswaController extends Controller
      */
     public function store(Request $request)
     {
+
         $jadwalnya = JadwalPelajaran::findOrFail($request->id_jadwal);
         $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get();
         // foreach ($siswas as $siswa) {
@@ -68,18 +106,25 @@ class AbsensiSiswaController extends Controller
            if (Auth::user()->role->role === 'guru') 
            {
             $absensiSiswa->id_guru = Auth::user()->guru->id;
+            $absensiSiswa->tanggal = Carbon::now()->format('Y-m-d');
            }else
            {
+            $absensiSiswa->tanggal =$request->tanggal;
             $absensiSiswa->id_guru = 9999;
            }
             $absensiSiswa->id_jadwal = $request->id_jadwal;
-            $absensiSiswa->tanggal = Carbon::now()->format('Y-m-d');
             $absensiSiswa->tahun_ajaran = '2022/2023';
             $absensiSiswa->id_keterangan_absensi = $request[$siswa->id];
             $absensiSiswa->save();
         }
-        return redirect()->route('absensi_siswa.index')
+        if (Auth::user()->role->role === 'guru') {
+            return redirect()->route('absensi_siswa.index', [ 'jadwal'=> $request->id_jadwal, 'tanggal' => Carbon::now()->format('Y-m-d') ])
         ->with('success', 'Absensi siswa berhasil disimpan');
+        }else {
+            return redirect()->route('absensi_siswa.index', [ 'jadwal'=> $request->id_jadwal, 'tanggal' => $request->tanggal ])
+        ->with('success', 'Absensi siswa berhasil disimpan');
+        }
+        
     }
 
     /**
@@ -99,12 +144,18 @@ class AbsensiSiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $date)
     {
-        if ($this->cekLoggedInUser($id) === false) {
-            return response()->json(['You do not have permission to access for this page.']);
+        if (Auth::user()->role->role === 'guru') {
+            if ($this->cekLoggedInUser($id) === false) {
+                return response()->json(['You do not have permission to access for this page.']);
+            }
         }
-        $listAbsensi = AbsensiSiswa::where('id_jadwal', $id)->get();
+        if (Auth::user()->role->role === 'guru'){
+            $listAbsensi = AbsensiSiswa::where('id_jadwal', $id)->where('tanggal', Carbon::now()->format('Y-m-d'))->get();
+        }else{
+            $listAbsensi = AbsensiSiswa::where('id_jadwal', $id)->where('tanggal', $date)->get();
+        }
         $idJadwal = $id;
 
         return view('absensi.siswa.update', compact('listAbsensi', 'idJadwal'));
@@ -122,12 +173,22 @@ class AbsensiSiswaController extends Controller
         $jadwalnya = JadwalPelajaran::findOrFail($id);
         $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get();
         foreach ($siswas as $siswa) {
-            $absensiSiswa = AbsensiSiswa::where('id_siswa', $siswa->id)->where('tanggal', Carbon::now()->format('Y-m-d'))->first();
+            if (Auth::user()->role->role === 'guru') {
+                $absensiSiswa = AbsensiSiswa::where('id_siswa', $siswa->id)->where('tanggal', Carbon::now()->format('Y-m-d'))->first();
+            }
+            else{
+                $absensiSiswa = AbsensiSiswa::where('id_siswa', $siswa->id)->where('tanggal', $request->date)->first();
+            }
             $absensiSiswa->id_keterangan_absensi = $request[$siswa->id];
             $absensiSiswa->save();
         }
-        return redirect()->route('absensi_siswa.index')
-        ->with('success', 'Absensi siswa berhasil diubah');
+        if (Auth::user()->role->role === 'guru') {
+            return redirect()->route('absensi_siswa.index', [ 'jadwal'=> $id, 'tanggal' => Carbon::now()->format('Y-m-d') ])
+        ->with('success', 'Absensi siswa berhasil disimpan');
+        }else {
+            return redirect()->route('absensi_siswa.index', [ 'jadwal'=> $id, 'tanggal' => $request->date ])
+        ->with('success', 'Absensi siswa berhasil disimpan');
+        }
         
     }
 
@@ -137,9 +198,14 @@ class AbsensiSiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $date)
     {
-        //
+        if (Auth::user()->role->role === 'guru') {
+            return response()->json(['You do not have permission to access for this page.']);   
+        }
+        AbsensiSiswa::where('id_jadwal', $id)->where('tanggal', $date)->delete();
+        return redirect()->route('absensi_siswa.index', [ 'jadwal'=> $id, 'tanggal' => $date ])
+        ->with('success', 'Absensi siswa berhasil dihapus');
     }
     
     public function cekAbsen($idJadwal)

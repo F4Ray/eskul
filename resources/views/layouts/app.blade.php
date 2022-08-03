@@ -88,7 +88,7 @@
                         </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)
-                        <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }}">
+                        <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }} {{ setActive('absensi_siswa') }}">
 
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Master
                                     Data</span></a>

@@ -22,4 +22,12 @@ class AbsensiSiswa extends Model
     {
         return $this->belongsTo(Siswa::class, 'id_siswa');
     }
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_guru');
+    }
+    public function keterangan()
+    {
+        return $this->belongsTo(KeteranganAbsensi::class, 'id_keterangan_absensi');
+    }
 }

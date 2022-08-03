@@ -6,6 +6,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2-bootstrap4.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/sweetalert2.min.css') }}">
 <style>
 .select2-selection__rendered {
     margin: 4.5px;
@@ -76,11 +77,12 @@ input[type="radio"]:checked::before{
         <div class="card shadow mb-4">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">
-                    @if (Auth::user()->role->role == 'admin')
-                    {{ __('Absensi Siswa') }}
+                    <!-- @if (Auth::user()->role->role == 'admin')
+                    {{ __('Lihat Absensi Siswa') }}
                     @else (Auth::user()->role->role == 'guru')
                     {{ __('Isi Absensi Hari Ini') }}
-                    @endif
+                    @endif -->
+                    Lihat Absensi Siswa
                 </h6>
             </div>
             <div class="card-body">
@@ -99,62 +101,78 @@ input[type="radio"]:checked::before{
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                                <label>Tanggal</label>
+                                @if(!request()->get('tanggal'))
+                                <input type='date' name='tanggal' max="{{ \Carbon\Carbon::now()->format('Y-m-d'); }}" class='form-control'>
+                                @else
+                                <input type='date' name='tanggal' value="{{ request()->get('tanggal') }}" class='form-control' max="{{ \Carbon\Carbon::now()->format('Y-m-d'); }}">
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <!-- <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a> -->
-                            <button class="btn btn-success" type="submit"> Submit </button>
+                            <button class="btn btn-primary" type="submit"> Submit </button>
                         </div>
                     </div>
                 </form>
                 @if(request()->get('jadwal'))
-                <form method="post" action="{{route('absensi_siswa.store')}}" enctype="multipart/form-data">
-                    @csrf
-                    <input name="id_jadwal" value="{{ $jadwalnya->id }}" hidden>
-                    <input name="id_kelas" value="{{ $jadwalnya->id_kelas }}" hidden>
                     <div class="row mt-3">
                         <div class="col-md-12">
-                            @if($siswas != false)
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr class="text-center">
                                             <th>Nama</th>
-                                            <th>Hadir</th>
-                                            <th>Sakit</th>
-                                            <th>Izin</th>
-                                            <th>Alpa</th>
+                                            <th>Diabsen oleh</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if($siswas->isEmpty())
+                                        @if($absens->isEmpty())
                                         <tr>
-                                            <td colspan="5">Tidak ada siswa di kelas ini</td>
+                                            <td colspan="5">Tidak ada data absen. <a href="{{ route('absensi_siswa.create', ['jadwal'=> request()->get('jadwal') , 'tanggal' => request()->get('tanggal')] ) }}" target="">Klik disini</a> untuk mengisi absen</td>
                                         </tr>
                                         @else
-                                        @foreach($siswas as $siswa)
+                                        @foreach($absens as $absen)
                                         <tr class="text-center">
-                                            <td>{{ $siswa->nama }}</td>
-                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="1"></td>
-                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="2"></td>
-                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="3"></td>
-                                            <td><input class="" type="radio" name="{{ $siswa->id }}" value="5"></td>
+                                            <td>{{ $absen->siswa->nama }}</td>
+                                            <td>@if($absen->id_guru == 9999) Admin @else {{ $absen->guru->nama }} @endif</td>
+                                            <td>{{ $absen->keterangan->keterangan }}</td>
                                         </tr>
                                         @endforeach
                                         @endif
                                     </tbody>
                                 </table>
                             </div>
-                            @if($siswas->isEmpty())
+                            
+                            <!-- Absensi kelas ini sudah terisi untuk hari ini. <a href="#">Klik disini</a> untuk mengubah absensi siswa. -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 float-right">
+                            @if($absens->isNotEmpty())
+                            @if (Auth::user()->role->role == 'admin')
+                                <!-- <a class="btn btn-danger float-right " href=""> Hapus Data </a> -->
+
+                                <form action="{{ route('absensi_siswa.destroy', ['id'=>request()->get('jadwal'), 'date'=> request()->get('tanggal')]) }}" method="post" id="formHapus">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger float-right show_confirm " data-toggle="tooltip" name="delete"> Hapus </button>
+                                </form>
+                                
+                                <a class="btn btn-success float-right mr-2" href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> request()->get('tanggal') ] )}}" role="button"> Edit Data </a>
                             @else
-                            <button class="btn btn-success float-right" type="submit"> Submit </button>
+                            @if(request()->get('tanggal') == \Carbon\Carbon::now()->format('Y-m-d'))
+                                <a class="btn btn-success float-right" href="{{route('absensi_siswa.edit', $jadwalnya->id)}}" role="button"> Edit Data </a>
                             @endif
-                            @else
-                            Absensi kelas ini sudah terisi untuk hari ini. <a href="{{route('absensi_siswa.edit', $jadwalnya->id)}}">Klik disini</a> untuk mengubah absensi siswa.
+                            @endif
                             @endif
                         </div>
                     </div>
-                </form>
                 @endif
                     <!-- <div class="col-md-5">
                         <div class="form-group">
@@ -174,6 +192,7 @@ input[type="radio"]:checked::before{
 @endsection
 @section('internalScript')
 <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script>
 $(document).ready(function() {
     @if(!request()->get('jadwal'))
@@ -182,12 +201,57 @@ $(document).ready(function() {
     $(".select-keterangan").val({{ request()->get('jadwal') }}).trigger('change');
     @endif
     $('.select-keterangan').select2({
-        minimumResultsForSearch: Infinity,
         placeholder: 'Klik untuk memilih',
         theme: 'bootstrap4',
         width: 'style',
     });
 });
+
+let tablenya = $('.show_confirm');
+tablenya.on('click', function(e) {
+    // var form = ($(this).parents('form'));
+    var form = $(this).closest("form");
+    // var form = $('#formHapus');
+    // var name = $(this).data("name");
+    event.preventDefault();
+    Swal.fire({
+        title: 'Yakin dek?',
+        text: "Afkh Benar mau Hapus?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Tar dulu deh",
+        confirmButtonText: 'Delete aja bang'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    })
+});
+<?php if (session()->has('successHapus')) { ?>
+Swal.fire({
+    type: "success",
+    icon: "success",
+    title: "BERHASIL!",
+    text: "{{ session('successHapus') }}",
+    timer: 1500,
+    showConfirmButton: false,
+    showCancelButton: false,
+    buttons: false,
+});
+<?php } elseif (session()->has('error')) { ?>
+Swal.fire({
+    type: "error",
+    icon: "error",
+    title: "GAGAL!",
+    text: "{{ session('error') }}",
+    timer: 1500,
+    showConfirmButton: false,
+    showCancelButton: false,
+    buttons: false,
+});
+<?php } ?>
 </script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script> -->
 @endsection

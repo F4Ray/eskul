@@ -71,4 +71,6 @@ Route::middleware(['auth', 'user-access:admin,guru'])->group(function () {
     Route::get('/guru/home', [HomeController::class, 'guruHome'])->name('guru.home');
     Route::resource('absensi_guru', AbsensiGuruController::class, ['only' => ['create', 'store', 'index']]);
     Route::resource('absensi_siswa', AbsensiSiswaController::class, ['only' => ['create', 'store', 'index','edit','update']]);
+    Route::get('absensi_siswa/{id}/{date}/edit', ['as' => 'absensi_siswa.edit', 'uses' => 'App\Http\Controllers\AbsensiSiswaController@edit']);
+    Route::delete('absensi_siswa/{id}/{date}', ['as' => 'absensi_siswa.destroy', 'uses' => 'App\Http\Controllers\AbsensiSiswaController@destroy']);
 });
