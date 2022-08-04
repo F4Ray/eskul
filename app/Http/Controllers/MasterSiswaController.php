@@ -55,7 +55,8 @@ class MasterSiswaController extends Controller
      */
     public function create()
     {
-        $kelases = Kelas::all();
+        $kelasKosong = $this->ambilKelasKosong();
+        $kelases = Kelas::whereIn('id', $kelasKosong)->get();
         return view('master.siswa.create', compact('kelases'));
     }
 
@@ -67,6 +68,7 @@ class MasterSiswaController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validated = $request->validate(
             [
                 'nama' => 'required',
@@ -130,7 +132,8 @@ class MasterSiswaController extends Controller
     public function edit($id)
     {
         $siswa = Siswa::findOrFail($id);
-        $kelases = Kelas::all();
+        $kelasKosong = $this->ambilKelasKosong();
+        $kelases = Kelas::whereIn('id', $kelasKosong)->get();
         return view('master.siswa.update', compact('kelases', 'siswa'));
     }
 
@@ -170,5 +173,18 @@ class MasterSiswaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function ambilKelasKosong()
+    {
+        $kelases = Kelas::all();
+        $kelasKosong = array();
+        foreach ($kelases as $kelas) {
+            $siswa = Siswa::where('id_kelas', $kelas->id)->get();
+            if ($siswa->count() < $kelas->max_jumlah) {
+                array_push($kelasKosong, $kelas->id);
+            }
+        }
+        return $kelasKosong;
     }
 }
