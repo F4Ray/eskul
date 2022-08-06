@@ -22,10 +22,10 @@ class AbsensiGuruController extends Controller
     {
         if (Auth::user()->role->role === 'guru') {
             $guru = Auth::user()->guru;
-            // $absensi = AbsensiGuru::where('id_guru', $guru->id);
+            // $absensi = AbsensiGuru::where('id_guru', $guru->id)->get();
 
             if ($request->ajax()) {
-                $data = AbsensiGuru::where('id_guru', $guru->id);
+                $data = AbsensiGuru::where('id_guru', $guru->id)->get();
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('tanggal', function ($row) {
@@ -38,7 +38,7 @@ class AbsensiGuruController extends Controller
             }
             return view('absensi.guru.index');
 
-            return view('absensi.guru.index', compact('guru', 'absensi'));
+            // return view('absensi.guru.index', compact('guru', 'absensi'));
         } else {
             if ($request->ajax()) {
                 $data = AbsensiGuru::get();

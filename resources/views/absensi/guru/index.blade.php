@@ -34,8 +34,10 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-12">
+                                @if(Auth::user()->role->role == 'admin')
                                 <a name="" id="" class="btn btn-primary d-block"
                                     href="{{ route('absensi_guru.create') }}" role="button">Tambah Data</a>
+                                @endif
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -161,7 +163,7 @@
         load_data();
 
         function load_data() {
-            $('#table-jadwal').DataTable({
+            $('#table-absensi-guru').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
