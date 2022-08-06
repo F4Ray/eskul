@@ -84,8 +84,8 @@
                         </li>
                         <li class="{{ setActive('absensi_guru') }}"><a class="nav-link" href="{{ route('absensi_guru.index') }}"><i class="fas fa-calendar-alt"></i>Absensi</a>
                         </li>
-                        <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-user-friends"></i>Absensi Siswa</a>
-                        </li>
+                        <!-- <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-user-friends"></i>Absensi Siswa</a>
+                        </li> -->
                         <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Lihat Absensi Siswa</a>
                         </li>
                         @endif

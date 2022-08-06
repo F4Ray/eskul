@@ -167,7 +167,7 @@ input[type="radio"]:checked::before{
                                 <a class="btn btn-success float-right mr-2" href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> request()->get('tanggal') ] )}}" role="button"> Edit Data </a>
                             @else
                             @if(request()->get('tanggal') == \Carbon\Carbon::now()->format('Y-m-d'))
-                                <a class="btn btn-success float-right" href="{{route('absensi_siswa.edit', $jadwalnya->id)}}" role="button"> Edit Data </a>
+                                <a class="btn btn-success float-right" href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> \Carbon\Carbon::now()->format('Y-m-d') ])}}" role="button"> Edit Data </a>
                             @endif
                             @endif
                             @endif
