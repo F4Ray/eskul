@@ -91,16 +91,22 @@ input[type="radio"]:checked::before{
                 <form method="POST" action="{{route('nilai.lihat')}}" enctype="multipart/form-data">
                     <!-- @csrf -->
                     <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
+                        @if(Auth::user()->role->role == 'admin')
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label>Siswa</label>
                                 <input value="{{ $kelas->kelas }} {{ $kelas->rombel }}" class="form-control" readonly>
                             </div>
                         </div>
+                        @endif
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Mata Pelajaran</label>
+                                @if(Auth::user()->role->role == 'admin')
                                 <input value="{{ $jadwal->mapel->nama }}" class="form-control" readonly>
+                                @else
+                                <input value="{{ $jadwal->kelas->kelas }} {{ $jadwal->kelas->rombel }} - {{ $jadwal->mapel->nama }}" class="form-control" readonly>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -153,7 +159,9 @@ $(document).ready(function() {
             ajax: {
                 url: '{{ route("nilai.lihat") }}',
                 data: {
+                    @if(Auth::user()->role->role == 'admin')
                     kelas: {{ $kelas->id }},
+                    @endif
                     jadwal: {{ $jadwal->id }}
                 },
             },

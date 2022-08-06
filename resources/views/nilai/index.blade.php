@@ -89,6 +89,7 @@ input[type="radio"]:checked::before{
                 <form method="GET" action="{{route('nilai.lihat')}}" enctype="multipart/form-data">
                     
                     <div class="row">
+                        @if(Auth::user()->role->role == 'admin')
                         <div class="col-md-4">
                             <div class="form-group">
                                     <label>Kelas</label>
@@ -102,13 +103,27 @@ input[type="radio"]:checked::before{
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Pilih Matkul</label>
+                                <label>Pilih mata pelajaran</label>
                                 {!! Form::select('jadwal',[''=>'Pilih kelas terlebih
                                 dahulu'],null,['class'=>'form-control select-jadwal'])
                                 !!}
                             </div>
                             <!-- </div> -->
                         </div>
+                        @else
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Pilih mata pelajaran</label>
+                                <select class="form-control select-jadwal" name="jadwal">
+                                    @foreach ($jadwals as $jadwal)
+                                    <option value="{{ $jadwal->id }}">{{ $jadwal->kelas->kelas }} {{ $jadwal->kelas->rombel }} -
+                                        {{ $jadwal->mapel->nama }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="col-md-12">

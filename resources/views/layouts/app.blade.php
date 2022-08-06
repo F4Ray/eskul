@@ -87,6 +87,7 @@
                         <!-- <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-user-friends"></i>Absensi Siswa</a>
                         </li> -->
                         <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Lihat Absensi Siswa</a>
+                        <li class="{{ setActive('nilai') }}  {{ setActive('lihat') }}"><a class="nav-link" href="{{ route('nilai.index') }}"><i class="fas fa-chart-bar"></i>Nilai Siswa</a>
                         </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)

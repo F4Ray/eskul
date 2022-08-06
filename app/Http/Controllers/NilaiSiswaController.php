@@ -7,7 +7,7 @@ use App\Models\Kelas;
 use App\Models\NilaiSiswa;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 
 class NilaiSiswaController extends Controller
@@ -20,7 +20,13 @@ class NilaiSiswaController extends Controller
     public function index()
     {
         $kelases = Kelas::all();
-        $jadwals = JadwalPelajaran::all();
+        $jadwals = JadwalPelajaran::all(); 
+        if (Auth::user()->role->role === 'guru'){
+            $jadwals = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->groupBy('id_mata_pelajaran')->get();
+        }else{
+            $jadwals = JadwalPelajaran::all();
+        }
+        
         // $jadwalnya = JadwalPelajaran::where('id_kelas', 3)->groupBy('id_mata_pelajaran')->get();
         // dd($jadwalnya);
 
@@ -31,7 +37,11 @@ class NilaiSiswaController extends Controller
     public function ajaxKelas(Request $request)
     {
         if ($request->ajax()) {
-            $jadwalnya = JadwalPelajaran::where('id_kelas', $request->id_kelas)->groupBy('id_mata_pelajaran')->get();
+            if (Auth::user()->role->role === 'guru'){
+                $jadwalnya = JadwalPelajaran::where('id_kelas', $request->id_kelas)->where('id_guru', Auth::user()->guru->id)->groupBy('id_mata_pelajaran')->get();
+            }else{
+                $jadwalnya = JadwalPelajaran::where('id_kelas', $request->id_kelas)->groupBy('id_mata_pelajaran')->get();
+            }
             $data = view('nilai.ajax-kelas', compact('jadwalnya'))->render();
             return response()->json(['options' => $data]);
         }
@@ -39,8 +49,12 @@ class NilaiSiswaController extends Controller
 
     public function lihat(Request $request)
     {
-        $kelas = Kelas::findOrFail($request->kelas);
-        $jadwal = JadwalPelajaran::findOrFail($request->jadwal);
+        if (Auth::user()->role->role === 'guru'){
+            $jadwal = JadwalPelajaran::findOrFail($request->jadwal);
+        }else{
+            $kelas = Kelas::findOrFail($request->kelas);
+            $jadwal = JadwalPelajaran::findOrFail($request->jadwal);
+        }
 
         // var_dump($request->all());
         // $nilais = NilaiSiswa::where('id_jadwal', $request->jadwal)->distinct()->get();
@@ -61,7 +75,11 @@ class NilaiSiswaController extends Controller
                 ->make(true);
         }
         // dd($nilai);
-        return view('nilai.lihat', compact('kelas','jadwal'));
+        if (Auth::user()->role->role === 'guru'){
+            return view('nilai.lihat', compact('jadwal'));
+        }else{
+            return view('nilai.lihat', compact('kelas','jadwal'));
+        }
     }
 
     /**
@@ -123,7 +141,9 @@ class NilaiSiswaController extends Controller
         $nilai->nilai_tugas = $request->nilai_tugas;
         $nilai->nilai_uts = $request->nilai_uts;
         $nilai->nilai_uas = $request->nilai_uas;
-        $nilai->nilai_akhir = $request->nilai_akhir;
+
+        $nilaiAkhir = (intval($request->nilai_tugas) + intval($request->nilai_uts) + intval($request->nilai_uas)) / 3;
+        $nilai->nilai_akhir = $nilaiAkhir;
         $nilai->save();
 
         return redirect()->route('nilai.index')

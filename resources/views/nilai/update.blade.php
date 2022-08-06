@@ -105,14 +105,7 @@
                                 <input class="form-control" name="nilai_uas"
                                     value="{{ $nilai->nilai_uas }}">
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Nilai Akhir</label>
-                                <input class="form-control" name="nilai_akhir"
-                                    value="{{ $nilai->nilai_akhir }}">
-                            </div>
-                        </div>
+                        </div>                        
                         
                     </div>
                     <!-- <div class="col-md-5">
@@ -123,7 +116,7 @@
                     </div> -->
 
 
-                    <a class="btn btn-light" href="{{route('master_jadwal_pelajaran.index')}}" role="button">Kembali</a>
+                    <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
                     <button class="btn btn-success" type="submit"> Submit </button>
                 </form>
             </div>
