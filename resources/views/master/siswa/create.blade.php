@@ -18,7 +18,18 @@
         <div class="section-header">
             <h1>Master Data</h1>
         </div>
+        @if(count($errors) > 0 )
+            <div class="col-md-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
 
+                    {{$errors->first()}}
+
+                </div>
+            </div>
+            @endif
         <div class="card shadow mb-4">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">Tambah Data Siswa</h6>

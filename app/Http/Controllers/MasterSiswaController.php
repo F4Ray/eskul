@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JadwalPelajaran;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use Yajra\Datatables\Datatables;
 use App\Models\Kelas;
+use App\Models\NilaiSiswa;
 use App\Models\User;
 
 class MasterSiswaController extends Controller
@@ -68,12 +70,12 @@ class MasterSiswaController extends Controller
      */
     public function store(Request $request)
     {
-        
+         
         $validated = $request->validate(
             [
                 'nama' => 'required',
                 'nis' => 'required|unique:siswa|numeric',
-                'nisn' => 'numeric'
+                'nisn' => 'numeric|nullable'
             ],
             [
                 'nis.unique' => 'NIS sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.',
@@ -103,8 +105,21 @@ class MasterSiswaController extends Controller
         $siswa->email = $request->email;
         $siswa->id_kelas = $request->kelas;
 
+        
+        
+
         $siswa->save();
         $siswa->user()->save($user);
+
+        if ($request->kelas) {
+            $jadwalnya = JadwalPelajaran::where('id_kelas', $request->kelas)->pluck("id");
+            
+            foreach($jadwalnya as $jadwal){
+                $nilai = new NilaiSiswa;
+                $nilai->id_jadwal = $jadwal;
+                $siswa->nilai()->save($nilai);
+            }
+        } 
 
         return redirect()->route('master_siswa.index')
             ->with('success', '<strong>Data dan akun siswa berhasil disimpan !</strong> Silahkan login
@@ -146,6 +161,19 @@ class MasterSiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validated = $request->validate(
+            [
+                'nis' => 'numeric',
+                'nisn' => 'numeric|nullable'
+            ],
+            [
+                'nis.unique' => 'NIS sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.',
+                'nis.numeric' => 'NIS hanya boleh angka.',
+                'nisn.numeric' => 'NISN hanya boleh angka.',
+                'nis.required' => 'NIS harus diisi',
+                'nama.required' => 'Nama harus diisi'
+            ]
+        );
         $siswa = Siswa::findOrFail($id);
         $siswa->nama = $request->nama;
         $siswa->nisn = $request->nisn;
@@ -159,6 +187,16 @@ class MasterSiswaController extends Controller
         $siswa->id_kelas = $request->kelas;
 
         $siswa->save();
+        if ($request->kelas) {
+            $jadwalnya = JadwalPelajaran::where('id_kelas', $request->kelas)->pluck("id");
+            
+            foreach($jadwalnya as $jadwal){
+                $nilai = new NilaiSiswa;
+                $nilai->id_jadwal = $jadwal;
+                $siswa->nilai()->save($nilai);
+            }
+        } 
+
 
         return redirect()->route('master_siswa.index')
             ->with('success', 'Data siswa berhasil diedit.');

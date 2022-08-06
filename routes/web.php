@@ -10,6 +10,8 @@ use App\Http\Controllers\MasterMapelController;
 use App\Http\Controllers\MasterSiswaController;
 use App\Http\Controllers\AbsensiGuruController;
 use App\Http\Controllers\AbsensiSiswaController;
+use App\Http\Controllers\NilaiSiswaController;
+use App\Models\NilaiSiswa;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,4 +75,14 @@ Route::middleware(['auth', 'user-access:admin,guru'])->group(function () {
     Route::resource('absensi_siswa', AbsensiSiswaController::class, ['only' => ['create', 'store', 'index','edit','update']]);
     Route::get('absensi_siswa/{id}/{date}/edit', ['as' => 'absensi_siswa.edit', 'uses' => 'App\Http\Controllers\AbsensiSiswaController@edit']);
     Route::delete('absensi_siswa/{id}/{date}', ['as' => 'absensi_siswa.destroy', 'uses' => 'App\Http\Controllers\AbsensiSiswaController@destroy']);
+    Route::resource('nilai', NilaiSiswaController::class);
+    // Route::post('nilai/{idSiswa}/{idJadwal}', ['as' => 'nilai.show', 'uses' => 'App\Http\Controllers\NilaiSiswaController@show']);
+    Route::group(['as' => 'nilai.'], function () {
+        Route::post('ajax_kelas', [NilaiSiswaController::class, 'ajaxKelas'])->name('ajax_kelas');
+        // Route::post('lihat', [NilaiSiswaController::class, 'lihat'])->name('lihat');
+        Route::get('lihat', [NilaiSiswaController::class, 'lihat'])->name('lihat');
+        
+        // Route::post('ajax_guru', [NilaiSiswaController::class, 'ajaxGuru'])->name('ajax_guru');
+    });
+
 });

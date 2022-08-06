@@ -103,6 +103,12 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>kelas</label>
+                                @if($siswa->id_kelas != null)
+                                <select class="form-control select-kelas" readonly>
+                                    <option > {{$siswa->kelas->kelas}} {{ $siswa->kelas->rombel }} </option>
+                                </select>
+                                <small class="text-danger" >Kelas tidak dapat diubah</small>
+                                @else
                                 <select class="form-control select-kelas" name="kelas">
                                     @foreach ($kelases as $kelas)
                                     <option value="{{ $kelas->id }}" @if($kelas->id == $siswa->id_kelas)
@@ -111,6 +117,7 @@
                                     </option>
                                     @endforeach
                                 </select>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-6">

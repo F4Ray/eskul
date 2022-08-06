@@ -86,9 +86,11 @@
                         </li>
                         <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-user-friends"></i>Absensi Siswa</a>
                         </li>
+                        <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Lihat Absensi Siswa</a>
+                        </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)
-                        <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }} {{ setActive('absensi_siswa') }}">
+                        <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }} {{ setActive('absensi_siswa') }} {{ setActive('nilai') }} {{ setActive('lihat') }}">
 
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Master
                                     Data</span></a>
@@ -109,6 +111,8 @@
                                 <li class="{{ setActive('absensi_guru') }}"><a class="nav-link" href="{{ route('absensi_guru.index') }}"><i class="fas fa-clipboard-list"></i>Absensi Guru</a>
                                 </li>
                                 <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-clipboard"></i>Absensi Siswa</a>
+                                </li>
+                                <li class="{{ setActive('nilai') }}  {{ setActive('lihat') }}"><a class="nav-link" href="{{ route('nilai.index') }}"><i class="fas fa-chart-bar"></i>Nilai Siswa</a>
                                 </li>
                             </ul>
                         </li>
