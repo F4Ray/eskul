@@ -127,7 +127,7 @@
 
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2022 <div class="bullet"></div> Our Capstone <div class="bullet">
+                    Copyright &copy; 2022 <div class="bullet">
                     </div> All Rights
                     Reserved.
                 </div>

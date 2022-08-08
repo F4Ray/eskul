@@ -8,7 +8,7 @@
 
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Guru</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -25,7 +25,7 @@
                                 <p>Nama Lengkap : {{ $siswa->nama }}</p>
                             </div>
                             <div class="col-md-6">
-                                <p>NIP : {{ $siswa->nis }}</p>
+                                <p>NIS : {{ $siswa->nis }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p>Kelas: {{ $siswa->kelas->kelas }} {{$siswa->kelas->rombel}} </p>

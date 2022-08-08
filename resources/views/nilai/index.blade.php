@@ -44,7 +44,7 @@ input[type="radio"]:checked::before{
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Absensi Siswa</h1>
+            <h1>Nilai Siswa</h1>
         </div>
         <div class="row">
             @if ($message = Session::get('success'))
@@ -82,7 +82,7 @@ input[type="radio"]:checked::before{
                     @else (Auth::user()->role->role == 'guru')
                     {{ __('Isi Absensi Hari Ini') }}
                     @endif -->
-                    Lihat Absensi Siswa
+                    Lihat Nilai Siswa
                 </h6>
             </div>
             <div class="card-body">

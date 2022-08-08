@@ -37,7 +37,7 @@
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">
                     @if (Auth::user()->role->role == 'admin')
-                    {{ __('Tambah Data Absensi Guru') }}
+                    {{ __('Tambah Absensi Guru') }}
                     @else (Auth::user()->role->role == 'guru')
                     {{ __('Isi Absensi Hari Ini') }}
                     @endif
