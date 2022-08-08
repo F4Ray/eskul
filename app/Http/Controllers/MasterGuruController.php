@@ -6,7 +6,9 @@ use App\Models\Guru;
 use App\Models\Mapel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Hash;
 
 class MasterGuruController extends Controller
 {
@@ -31,6 +33,10 @@ class MasterGuruController extends Controller
                     $detailBtn = '<a href="' . route('master_guru.show', $row->id) . '" class="btn btn-block btn-info btn-sm">Lihat Detail</a>';
                     return $detailBtn;
                 })
+                ->addColumn('password', function ($row) {
+                    $detailBtn = '<a href="' . route('master_guru.lihatpassword', $row->id) . '" class="btn btn-block btn-warning btn-sm">Ubah Password</a>';
+                    return $detailBtn;
+                })
                 ->addColumn('action', function ($row) {
                     $actionBtn = '<a href="' . route('master_guru.edit', $row->id) . '" class="edit btn btn-block btn-success btn-sm">Edit</a>';
                     $actionBtn .= '<form ' .
@@ -41,7 +47,7 @@ class MasterGuruController extends Controller
             </form>';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'detail'])
+                ->rawColumns(['action', 'detail','password'])
                 ->make(true);
         }
         return view('master.guru.index');
@@ -250,6 +256,52 @@ class MasterGuruController extends Controller
         $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
         $guru->save();
         return redirect()->route('master_guru.index')
-            ->with('success', 'Foto guru berhasil diedit');
+            ->with('success', 'Foto guru berhasil diubah');
+    }
+
+    public function showPassword($id)
+    {
+        $guru = Guru::findOrFail($id);
+        $user = User::where('id_profile', $guru->id)->where('id_role', 2)->first(); 
+        return view('master.guru.ubahpassword', compact('guru','user'));
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $guru = Guru::findOrFail($id);
+        $user = User::where('id_profile', $guru->id)->where('id_role', 2)->first(); 
+        
+        if (Auth::user()->role->role === 'guru') {
+            $this->validate($request, [
+                'oldpassword' => 'required',
+                'newpassword' => 'required|different:password',
+            ]);
+        }else{
+            $this->validate($request, [
+                'newpassword' => 'required'
+            ]);
+        }
+        
+
+        if (Auth::user()->role->role === 'guru')  {
+            if (Hash::check($request->oldpassword, $user->password)) { 
+                $user->fill([
+                'password' => Hash::make($request->newpassword)
+                ])->save();
+                $request->session()->flash('success', 'Password berhasil diubah');
+                return redirect()->route('master_guru.lihatpassword',$id);
+            } else {
+                $request->session()->flash('error', 'Password lama salah');
+                return redirect()->route('master_guru.lihatpassword',$id);
+            }
+        }else{
+            $user->fill([
+                'password' => Hash::make($request->newpassword)
+                ])->save();
+            $request->session()->flash('success', 'Password berhasil diubah');
+                return redirect()->route('master_guru.index');
+        }
+       
+        
     }
 }

@@ -91,6 +91,8 @@ Route::middleware(['auth', 'user-access:admin,guru'])->group(function () {
     Route::group(['as' => 'master_guru.'], function () {
         Route::get('master_guru/gantifoto/guru/{id}', [MasterGuruController::class, 'changePicture'])->name('gantifoto');
         Route::post('simpanfoto/guru/', [MasterGuruController::class, 'savePicture'])->name('simpanfoto');
+        Route::get('master_guru/{id}/ubahpassword', [MasterGuruController::class, 'showPassword'])->name('lihatpassword');
+        Route::put('master_guru/ubahpassword/{id}', [MasterGuruController::class, 'changePassword'])->name('ubahpassword');
         // Route::post('ajax_guru', [NilaiSiswaController::class, 'ajaxGuru'])->name('ajax_guru');
     });
 

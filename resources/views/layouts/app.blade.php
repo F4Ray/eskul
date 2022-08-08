@@ -99,6 +99,8 @@
                                 <li class="{{ setActive('absensi_siswa/create') }}"><a class="nav-link" style="padding-left: 41px;" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Isi Absensi Siswa</a>
                             </ul>
                         </li>
+                        <li class="{{ setActive('master_guru') }} "><a class="nav-link" href="{{ route('master_guru.lihatpassword', Auth::user()->guru->id) }}"><i class="fas fa-key"></i>Ubah Password</a>
+                        </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)
                         <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }} {{ setActive('absensi_siswa') }} {{ setActive('nilai') }} {{ setActive('lihat') }}">
