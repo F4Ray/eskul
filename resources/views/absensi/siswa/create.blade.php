@@ -165,7 +165,7 @@ input[type="radio"]:checked::before{
                             <button class="btn btn-primary float-right" type="submit"> Submit </button>
                             @endif
                             @else
-                            Absensi kelas ini sudah terisi untuk hari ini. <a href="{{route('absensi_siswa.edit', $jadwalnya->id)}}">Klik disini</a> untuk mengubah absensi siswa.
+                            Absensi kelas ini sudah terisi untuk hari ini. <a href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> \Carbon\Carbon::now()->format('Y-m-d') ])}}">Klik disini</a> untuk mengubah absensi siswa.
                             @endif
                         </div>
                     </div>
