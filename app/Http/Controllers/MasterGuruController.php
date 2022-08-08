@@ -229,4 +229,27 @@ class MasterGuruController extends Controller
         $guru = Guru::findOrFail($id);
         return view('master.guru.gantifoto', compact('guru'));
     }
+
+    public function savePicture(Request $request)
+    {
+        $validatedData = $request->validate([
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+    
+           ]);
+        $name = $request->file('image')->getClientOriginalName();
+        $image = explode(".", $name);
+        $image_extension = array_slice($image , -1, 1);
+        $data['image'] = "guru-".$request->id."-".time().'.'.$image_extension[0];
+        
+        $guru = Guru::findOrFail($request->id);
+        $fotoLama = $guru->foto;
+        $guru->foto = $data['image'];
+        if($fotoLama != "avatar-4.png"){
+        unlink(storage_path('app/public/assets/img/avatar/'.$fotoLama));
+        }
+        $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
+        $guru->save();
+        return redirect()->route('master_guru.index')
+            ->with('success', 'Foto guru berhasil diedit');
+    }
 }
