@@ -86,8 +86,18 @@
                         </li>
                         <!-- <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-user-friends"></i>Absensi Siswa</a>
                         </li> -->
-                        <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Lihat Absensi Siswa</a>
+                        <!-- <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Lihat Absensi Siswa</a> -->
                         <li class="{{ setActive('nilai') }}  {{ setActive('lihat') }}"><a class="nav-link" href="{{ route('nilai.index') }}"><i class="fas fa-chart-bar"></i>Nilai Siswa</a>
+                        </li>
+                        <li class="dropdown {{ setActive('absensi_siswa') }}">
+
+                            <a href="#" class="nav-link has-dropdown" ><i class="fas fa-users"></i><span>Absensi Siswa </span></a>
+
+                            <ul class="dropdown-menu">
+                                <li class="{{ setActive('absensi_siswa?') }} @if(Request::url() == 'http://localhost:8000/absensi_siswa') active @endif "><a class="nav-link" style="padding-left: 41px;" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-clipboard"></i>Lihat Absensi Siswa</a>
+                                </li>
+                                <li class="{{ setActive('absensi_siswa/create') }}"><a class="nav-link" style="padding-left: 41px;" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Isi Absensi Siswa</a>
+                            </ul>
                         </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)

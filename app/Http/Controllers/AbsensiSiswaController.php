@@ -28,7 +28,7 @@ class AbsensiSiswaController extends Controller
         
         if (Auth::user()->role->role === 'guru') {
             $jadwalGuru = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->where('hari', $hari)->get();
-            $request->tanggal = Carbon::now()->format('Y-m-d');
+            // $request->tanggal = Carbon::now()->format('Y-m-d');
         }else{
             $jadwalGuru = JadwalPelajaran::all();
         }
@@ -68,6 +68,7 @@ class AbsensiSiswaController extends Controller
         $hari = 'Senin';
         if (Auth::user()->role->role === 'guru') {
             $jadwalGuru = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->where('hari', $hari)->get();
+            $request->tanggal = Carbon::now()->format('Y-m-d');
         }else{
             $jadwalGuru = JadwalPelajaran::all();
         }
@@ -77,8 +78,11 @@ class AbsensiSiswaController extends Controller
                 $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get(); // jika absensi kosong alias belum ada, maka munculkan siswa untuk di absen
             }else{
                 $siswas = false;
+                $absens = AbsensiSiswa::where('id_jadwal', $request->jadwal)->where('tanggal', $request->tanggal)->get(); //
+                return view('absensi.siswa.create', compact('jadwalGuru', 'siswas','jadwalnya','absens'));
             }
             return view('absensi.siswa.create', compact('jadwalGuru', 'siswas','jadwalnya'));
+
         }
         return view('absensi.siswa.create', compact('jadwalGuru'));
     }

@@ -15,7 +15,7 @@
                     <div class="col-md-2 mb-3 text-center">
                         <img src="{{ asset('assets/img/avatar/avatar-4.png') }}" class="ml-auto img-fluid"
                             height="157.3" width="140">
-                        <a class="btn btn-primary mt-1" href="{{route('master_guru.update', $guru->id)}}"
+                        <a class="btn btn-primary mt-1" href="{{route('master_guru.gantifoto', $guru->id)}}"
                             role="button">Edit
                             Gambar</a>
                     </div>

@@ -134,7 +134,8 @@ input[type="radio"]:checked::before{
                                     <tbody>
                                         @if($absens->isEmpty())
                                         <tr>
-                                            <td colspan="5">Tidak ada data absen. <a href="{{ route('absensi_siswa.create', ['jadwal'=> request()->get('jadwal') , 'tanggal' => request()->get('tanggal')] ) }}" target="">Klik disini</a> untuk mengisi absen</td>
+                                           
+                                            <td colspan="5">Tidak ada data absen.  @if(Auth::user()->role->role == 'admin') <a href="{{ route('absensi_siswa.create', ['jadwal'=> request()->get('jadwal') , 'tanggal' => request()->get('tanggal')] ) }}" target="">Klik disini</a> untuk mengisi absen</td> @endif
                                         </tr>
                                         @else
                                         @foreach($absens as $absen)

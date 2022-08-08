@@ -165,7 +165,46 @@ input[type="radio"]:checked::before{
                             <button class="btn btn-primary float-right" type="submit"> Submit </button>
                             @endif
                             @else
-                            Absensi kelas ini sudah terisi untuk hari ini. <a href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> \Carbon\Carbon::now()->format('Y-m-d') ])}}">Klik disini</a> untuk mengubah absensi siswa.
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Nama</th>
+                                            <th>Diabsen oleh</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if($absens->isEmpty())
+                                        <tr>
+                                            <td colspan="5">Tidak ada data absen. <a href="{{ route('absensi_siswa.create', ['jadwal'=> request()->get('jadwal') , 'tanggal' => request()->get('tanggal')] ) }}" target="">Klik disini</a> untuk mengisi absen</td>
+                                        </tr>
+                                        @else
+                                        @foreach($absens as $absen)
+                                        <tr class="text-center">
+                                            <td>{{ $absen->siswa->nama }}</td>
+                                            <td>@if($absen->id_guru == 9999) Admin @else {{ $absen->guru->nama }} @endif</td>
+                                            <td>{{ $absen->keterangan->keterangan }}</td>
+                                        </tr>
+                                        @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                            @if (Auth::user()->role->role == 'admin')
+                                <!-- <a class="btn btn-danger float-right " href=""> Hapus Data </a> -->
+
+                                <form action="{{ route('absensi_siswa.destroy', ['id'=>request()->get('jadwal'), 'date'=> request()->get('tanggal')]) }}" method="post" id="formHapus">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger float-right show_confirm " data-toggle="tooltip" name="delete"> Hapus </button>
+                                </form>
+                                
+                                <a class="btn btn-success float-right mr-2" href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> request()->get('tanggal') ] )}}" role="button"> Edit Data </a>
+                            @else
+                            
+                                <a class="btn btn-success float-right" href="{{route('absensi_siswa.edit', ['id'=> $jadwalnya->id, 'date'=> \Carbon\Carbon::now()->format('Y-m-d') ])}}" role="button"> Edit Data </a>
+                            @endif
                             @endif
                         </div>
                     </div>
