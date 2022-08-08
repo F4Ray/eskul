@@ -116,7 +116,7 @@ input[type="radio"]:checked::before{
                                 </table>
                             </div>
                             <button class="btn btn-success float-right" type="submit"> Submit </button>
-                            
+                            <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
                         </div>
                     </div>
                 </form>
