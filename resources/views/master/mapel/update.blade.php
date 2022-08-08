@@ -63,7 +63,7 @@
                     </div> -->
 
 
-                    <a class="btn btn-light" href="{{route('master_mapel.index')}}" role="button">Kembali</a>
+                    <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
                     <button class="btn btn-success" type="submit"> Submit </button>
                 </form>
             </div>

@@ -60,7 +60,7 @@
                     </div>
 
                 </div>
-                <a class="btn btn-light" href="{{route('master_guru.index')}}" role="button">Kembali</a>
+                <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
                 <a class="btn btn-primary ml-2" href="{{route('master_guru.update', $guru->id)}}" role="button">Edit
                     Data</a>
             </div>
