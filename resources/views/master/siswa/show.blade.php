@@ -52,7 +52,7 @@
                     </div>
 
                 </div>
-                <a class="btn btn-light" href="{{route('master_siswa.index')}}" role="button">Kembali</a>
+                <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
                 <a class="btn btn-primary ml-2" href="{{route('master_siswa.edit', $siswa->id)}}" role="button">Edit
                     Data</a>
             </div>
