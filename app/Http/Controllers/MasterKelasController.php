@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
@@ -30,6 +31,10 @@ class MasterKelasController extends Controller
                         return $row->walikelas->nama;
                     }
                 })
+                ->addColumn('detail', function ($row) {
+                    $actionBtn = '<a href="' . route('master_kelas.show', $row->id) . '" class="edit btn btn-block btn-info btn-sm">Lihat Detail    </a>';
+                    return $actionBtn;
+                })
                 ->addColumn('action', function ($row) {
                     $actionBtn = '<a href="' . route('master_kelas.edit', $row->id) . '" class="edit btn btn-block btn-success btn-sm">Edit</a>';
                     $actionBtn .= '<form ' .
@@ -40,7 +45,7 @@ class MasterKelasController extends Controller
             </form>';
                     return $actionBtn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action','detail'])
                 ->make(true);
         }
         return view('master.kelas.index');
@@ -107,9 +112,16 @@ class MasterKelasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
-        //
+        $kelas = Kelas::findOrFail($id);
+        if ($request->ajax()) {
+            $data = Siswa::where('id_kelas', $request->id_kelas)->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('master.kelas.show', compact('kelas'));
     }
 
     /**

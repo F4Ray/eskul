@@ -48,6 +48,7 @@
                                             <th scope="col">Wali Kelas</th>
                                             <th scope="col">Jumlah Siswa Maksimal</th>
                                             <th scope="col">Tahun Ajaran</th>
+                                            <th scope="col">Detail</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -99,6 +100,12 @@ $(document).ready(function() {
                 {
                     data: 'tahun_ajaran',
                     name: 'tahun_ajaran'
+                },
+                {
+                    data: 'detail',
+                    name: 'detail',
+                    orderable: true,
+                    searchable: false
                 },
                 {
                     data: 'action',
