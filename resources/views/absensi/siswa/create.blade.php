@@ -236,7 +236,6 @@ $(document).ready(function() {
     $(".select-keterangan").val({{ request()->get('jadwal') }}).trigger('change');
     @endif
     $('.select-keterangan').select2({
-        minimumResultsForSearch: Infinity,
         placeholder: 'Klik untuk memilih',
         theme: 'bootstrap4',
         width: 'style',

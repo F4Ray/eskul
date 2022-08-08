@@ -74,7 +74,7 @@ class AbsensiSiswaController extends Controller
         }
         if ($request->get('jadwal')) {
             $jadwalnya = JadwalPelajaran::findOrFail($request->jadwal); 
-            if ($this->cekAbsen($request->jadwal) === false) {  //cek apakah kosong, jika kosong next
+            if ($this->cekAbsen($request->jadwal, $request->tanggal) === false) {  //cek apakah kosong, jika kosong next
                 $siswas = Siswa::where('id_kelas', $jadwalnya->kelas->id)->get(); // jika absensi kosong alias belum ada, maka munculkan siswa untuk di absen
             }else{
                 $siswas = false;
@@ -212,9 +212,9 @@ class AbsensiSiswaController extends Controller
         ->with('success', 'Absensi siswa berhasil dihapus');
     }
     
-    public function cekAbsen($idJadwal)
+    public function cekAbsen($idJadwal, $tanggal)
     {
-        $absen = AbsensiSiswa::where('id_jadwal', $idJadwal)->where('tanggal', Carbon::now()->format('Y-m-d'))->get();
+        $absen = AbsensiSiswa::where('id_jadwal', $idJadwal)->where('tanggal', $tanggal)->get();
         if ($absen->isEmpty()) {
             $result = false;   
         }else{

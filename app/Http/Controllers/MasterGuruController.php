@@ -114,7 +114,7 @@ class MasterGuruController extends Controller
         $guru->alamat = $request->alamat;
         $guru->no_hp = $request->no_hp;
         $guru->email = $request->email;
-        $guru->foto = $request->foto;
+        $guru->foto = "avatar-4.png";
         $guru->id_mata_pelajaran = 1111;
 
         $guru->save();
@@ -222,5 +222,11 @@ class MasterGuruController extends Controller
 
         return redirect()->route('master_guru.index')
             ->with('successHapus', 'Data guru berhasil dihapus!');
+    }
+
+    public function changePicture($id)
+    {
+        $guru = Guru::findOrFail($id);
+        return view('master.guru.gantifoto', compact('guru'));
     }
 }
