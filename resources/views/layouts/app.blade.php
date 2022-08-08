@@ -100,14 +100,13 @@
 
                                 <li class="{{ setActive('master_guru') }}"><a class="nav-link" href="{{ route('master_guru.index') }}"><i class="fas fa-unlock"></i>Guru</a>
                                 </li>
-                                <li class="{{ setActive('master_mapel') }}"><a class="nav-link" href="{{ route('master_mapel.index') }}"><i class="fas fa-book"></i>Mata
-                                        Pelajaran</a>
-                                </li>
-                                <li class="{{ setActive('master_siswa') }}"><a class="nav-link" href="{{ route('master_siswa.index') }}"><i class="fas fa-user-friends"></i>Siswa</a>
-                                </li>
                                 <li class="{{ setActive('master_kelas') }}"><a class="nav-link" href="{{ route('master_kelas.index') }}"><i class="fas fa-chalkboard-teacher"></i>Kelas</a>
                                 </li>
+                                <li class="{{ setActive('master_mapel') }}"><a class="nav-link" href="{{ route('master_mapel.index') }}"><i class="fas fa-book"></i>Mata Pelajaran</a>
+                                </li>
                                 <li class="{{ setActive('master_jadwal_pelajaran') }}"><a class="nav-link" href="{{ route('master_jadwal_pelajaran.index') }}"><i class="fas fa-calendar-alt"></i>Jadwal</a>
+                                </li>
+                                <li class="{{ setActive('master_siswa') }}"><a class="nav-link" href="{{ route('master_siswa.index') }}"><i class="fas fa-user-friends"></i>Siswa</a>
                                 </li>
                                 <li class="{{ setActive('absensi_guru') }}"><a class="nav-link" href="{{ route('absensi_guru.index') }}"><i class="fas fa-clipboard-list"></i>Absensi Guru</a>
                                 </li>
