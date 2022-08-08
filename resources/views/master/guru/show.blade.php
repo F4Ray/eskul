@@ -8,7 +8,7 @@
 
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Guru</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Guru</h6>
             </div>
             <div class="card-body">
                 <div class="row">

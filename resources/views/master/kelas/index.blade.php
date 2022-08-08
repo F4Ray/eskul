@@ -116,14 +116,14 @@ tablenya.on('click', '.show_confirm', function(e) {
     var name = $(this).data("name");
     event.preventDefault();
     Swal.fire({
-        title: 'Yakin dek?',
-        text: "Afkh Benar mau Hapus?",
+        title: 'Hapus data',
+        text: "Yakin mau dihapus?",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: "Tar dulu deh",
-        confirmButtonText: 'Delete aja bang'
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        cancelButtonText: "Batal",
+        confirmButtonText: 'Hapus'
     }).then((result) => {
         if (result.isConfirmed) {
             form.submit();

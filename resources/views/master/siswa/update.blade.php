@@ -21,7 +21,7 @@
 
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Siswa</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Edit Data Siswa</h6>
             </div>
             <div class="card-body">
                 <form method="post" action="{{route('master_siswa.update', $siswa->id)}}" enctype="multipart/form-data">
