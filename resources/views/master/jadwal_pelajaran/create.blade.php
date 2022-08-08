@@ -153,7 +153,7 @@ $("select[name='id_kelas']").change(function() {
     var id_kelas = $(this).val();
     var token = $("input[name='_token']").val();
     $.ajax({
-        url: "<?php echo route('master_jadwal_pelajaran.ajax_kelas') ?>",
+        url: "<?php echo route('master_jadwal_pelajaran.ajax_kelas_jadwal') ?>",
         method: 'POST',
         data: {
             id_kelas: id_kelas,

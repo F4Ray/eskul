@@ -58,8 +58,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('absensi_siswa', AbsensiSiswaController::class);
 
     Route::group(['as' => 'master_jadwal_pelajaran.'], function () {
-        Route::post('ajax_kelas', [MasterJadwalPelajaranController::class, 'ajaxKelas'])->name('ajax_kelas');
         Route::post('ajax_guru', [MasterJadwalPelajaranController::class, 'ajaxGuru'])->name('ajax_guru');
+        Route::post('ajax_kelas_jadwal', [MasterJadwalPelajaranController::class, 'ajaxKelas'])->name('ajax_kelas_jadwal');
     });
 });
 
