@@ -210,7 +210,14 @@ class MasterSiswaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $siswa = Siswa::findOrFail($id);
+        $siswa->delete();
+        $siswa->user()->delete();
+        $siswa->nilai()->delete();
+        #
+
+        return redirect()->route('master_siswa.index')
+            ->with('successHapus', 'Data siswa berhasil dihapus!');
     }
 
     public function ambilKelasKosong()
