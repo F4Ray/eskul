@@ -10,6 +10,7 @@ use App\Http\Controllers\MasterMapelController;
 use App\Http\Controllers\MasterSiswaController;
 use App\Http\Controllers\AbsensiGuruController;
 use App\Http\Controllers\AbsensiSiswaController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NilaiSiswaController;
 use App\Models\NilaiSiswa;
 
@@ -25,7 +26,9 @@ use App\Models\NilaiSiswa;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return view('auth.login');
+    // Route::get('/', [LoginController::class, 'index']);
 });
 
 Auth::routes();
