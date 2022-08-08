@@ -19,10 +19,13 @@ class NilaiSiswaController extends Controller
      */
     public function index()
     {
+        // $tes = JadwalPelajaran::where('id_kelas', 5)->whereIn('id_mata_pelajaran',$this->dontDuplicate(5))->get();;
+        // dd($tes);
+    
         $kelases = Kelas::all();
         $jadwals = JadwalPelajaran::all(); 
         if (Auth::user()->role->role === 'guru'){
-            $jadwals = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->groupBy('id_mata_pelajaran')->get();
+            $jadwals = JadwalPelajaran::where('id_guru', Auth::user()->guru->id)->groupBy('id_kelas')->get();
         }else{
             $jadwals = JadwalPelajaran::all();
         }
@@ -41,6 +44,7 @@ class NilaiSiswaController extends Controller
                 $jadwalnya = JadwalPelajaran::where('id_kelas', $request->id_kelas)->where('id_guru', Auth::user()->guru->id)->groupBy('id_mata_pelajaran')->get();
             }else{
                 $jadwalnya = JadwalPelajaran::where('id_kelas', $request->id_kelas)->groupBy('id_mata_pelajaran')->get();
+                // $jadwalnya = JadwalPelajaran::where('id_kelas', $request->id_kelas)->whereIn($this->dontDuplicate($request->id_kelas))->get();
             }
             $data = view('nilai.ajax-kelas', compact('jadwalnya'))->render();
             return response()->json(['options' => $data]);
@@ -159,5 +163,10 @@ class NilaiSiswaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function dontDuplicate($IdKelas)
+    {
+        return JadwalPelajaran::where('id_kelas', $IdKelas)->pluck('id_mata_pelajaran');
     }
 }
