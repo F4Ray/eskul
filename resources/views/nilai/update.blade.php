@@ -24,7 +24,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Master Data</h1>
+            <h1>Nilai Siswa</h1>
         </div>
         <div class="row">
             @if(count($errors) > 0 )
@@ -42,7 +42,7 @@
         </div>
         <div class="card shadow mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Jadwal Pelajaran</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Tambah Nilai Siswa</h6>
             </div>
             <div class="card-body">
                 <form method="post" action="{{route('nilai.update', $nilai->id)}}"

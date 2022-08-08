@@ -43,7 +43,7 @@ input[type="radio"]:checked::before{
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Absensi Guru</h1>
+            <h1>Absensi Siswa</h1>
         </div>
         <div class="row">
             @if ($message = Session::get('success'))

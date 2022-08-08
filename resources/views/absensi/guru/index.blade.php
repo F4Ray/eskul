@@ -10,7 +10,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Data Absensi</h1>
+            <h1>Absensi Guru</h1>
         </div>
         <div class="row">
             @if ($message = Session::get('success'))
@@ -29,7 +29,7 @@
             <div class="col-md-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Data Absensi Guru</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Absensi Guru</h6>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
@@ -119,14 +119,14 @@
         var name = $(this).data("name");
         event.preventDefault();
         Swal.fire({
-            title: 'Yakin dek?',
-            text: "Afkh Benar mau Hapus?",
+            title: 'Hapus data',
+            text: "Yakin mau dihapus?",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: "Tar dulu deh",
-            confirmButtonText: 'Delete aja bang'
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            cancelButtonText: "Batal",
+            confirmButtonText: 'Hapus'
         }).then((result) => {
             if (result.isConfirmed) {
                 form.submit();
