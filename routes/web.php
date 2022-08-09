@@ -43,9 +43,12 @@ Route::middleware(['auth', 'user-access:siswa,admin'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::group(['as' => 'master_siswa.'], function () {
         Route::get('detailsiswa/{id}', [MasterSiswaController::class, 'show'])->name('profile');
-        Route::get('detailsiswa/gantifoto/guru/{id}', [MasterSiswaController::class, 'changePicture'])->name('gantifoto');
+        Route::get('detailsiswa/gantifoto/siswa/{id}', [MasterSiswaController::class, 'changePicture'])->name('gantifoto');
         Route::put('simpanfoto/siswa/{id}', [MasterSiswaController::class, 'savePicture'])->name('simpanfoto');
+
     });
+    Route::resource('master_siswa', MasterSiswaController::class);
+
 });
 
 /*------------------------------------------
@@ -55,11 +58,10 @@ All Admin Routes List
 --------------------------------------------*/
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
-    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::resource('master_guru', MasterGuruController::class);
+    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::resource('absensi_guru', MasterGuruController::class);
     Route::resource('master_mapel', MasterMapelController::class);
-    Route::resource('master_siswa', MasterSiswaController::class);
     Route::resource('master_kelas', MasterKelasController::class);
     Route::resource('master_jadwal_pelajaran', MasterJadwalPelajaranController::class);
     Route::resource('absensi_guru', AbsensiGuruController::class);

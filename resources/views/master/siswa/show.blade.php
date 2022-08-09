@@ -52,7 +52,9 @@
                     </div>
 
                 </div>
+                @if(Auth::check() && Auth::user()->id_role == 1)
                 <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
+                @endif
                 <a class="btn btn-primary ml-2" href="{{route('master_siswa.edit', $siswa->id)}}" role="button">Edit
                     Data</a>
             </div>

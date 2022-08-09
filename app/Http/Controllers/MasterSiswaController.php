@@ -9,6 +9,7 @@ use Yajra\Datatables\Datatables;
 use App\Models\Kelas;
 use App\Models\NilaiSiswa;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class MasterSiswaController extends Controller
 {
@@ -19,6 +20,9 @@ class MasterSiswaController extends Controller
      */
     public function index(Request $request)
     {
+        if (Auth::user()->role->role === 'siswa') {
+            return redirect()->route('master_siswa.show', Auth::user()->siswa->id);
+        }
         if ($request->ajax()) {
             $data = Siswa::latest()->get();
             return Datatables::of($data)
@@ -185,7 +189,6 @@ class MasterSiswaController extends Controller
         $siswa->alamat = $request->alamat;
         $siswa->no_hp = $request->no_hp;
         $siswa->email = $request->email;
-        $siswa->id_kelas = $request->kelas;
 
         $siswa->save();
         if ($request->kelas) {
@@ -198,9 +201,13 @@ class MasterSiswaController extends Controller
             }
         } 
 
-
-        return redirect()->route('master_siswa.index')
+        if (Auth::user()->role->role === 'siswa') {
+            return redirect()->route('master_siswa.show',$id)
             ->with('success', 'Data siswa berhasil diedit.');
+        }else{
+            return redirect()->route('master_siswa.index')
+            ->with('success', 'Data siswa berhasil diedit.');
+        }
     }
 
     /**
