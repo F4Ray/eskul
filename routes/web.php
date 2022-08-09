@@ -12,6 +12,7 @@ use App\Http\Controllers\AbsensiGuruController;
 use App\Http\Controllers\AbsensiSiswaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NilaiSiswaController;
+use App\Models\AbsensiSiswa;
 use App\Models\NilaiSiswa;
 
 /*
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'user-access:siswa,admin'])->group(function () {
         Route::get('detailsiswa/gantifoto/siswa/{id}', [MasterSiswaController::class, 'changePicture'])->name('gantifoto');
         Route::put('simpanfoto/siswa/{id}', [MasterSiswaController::class, 'savePicture'])->name('simpanfoto');
         Route::get('lihatnilai/{id}', [NilaiSiswaController::class, 'show'])->name('lihatnilai');
+        Route::get('lihatabsen/{id}', [AbsensiSiswaController::class, 'show'])->name('lihatabsen');
         
     });
     Route::resource('master_siswa', MasterSiswaController::class);
@@ -83,7 +85,7 @@ Route::middleware(['auth', 'user-access:admin,guru,siswa'])->group(function () {
 
     Route::get('/guru/home', [HomeController::class, 'guruHome'])->name('guru.home');
     Route::resource('absensi_guru', AbsensiGuruController::class, ['only' => ['create', 'store', 'index']]);
-    Route::resource('absensi_siswa', AbsensiSiswaController::class, ['only' => ['create', 'store', 'index','edit','update']]);
+    Route::resource('absensi_siswa', AbsensiSiswaController::class, ['only' => ['create', 'store', 'index','edit','update','show']]);
     Route::get('absensi_siswa/{id}/{date}/edit', ['as' => 'absensi_siswa.edit', 'uses' => 'App\Http\Controllers\AbsensiSiswaController@edit']);
     Route::delete('absensi_siswa/{id}/{date}', ['as' => 'absensi_siswa.destroy', 'uses' => 'App\Http\Controllers\AbsensiSiswaController@destroy']);
     Route::resource('nilai', NilaiSiswaController::class);

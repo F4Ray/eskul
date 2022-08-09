@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AbsensiGuru;
 use App\Models\AbsensiSiswa;
 use App\Models\JadwalPelajaran;
 use App\Models\Kelas;
@@ -9,6 +10,7 @@ use App\Models\Siswa;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Datatables;
 
 class AbsensiSiswaController extends Controller
 {
@@ -137,9 +139,19 @@ class AbsensiSiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
-        //
+        if ($request->ajax()) {
+            $data = AbsensiSiswa::where('id_siswa', $request->siswa)->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('keterangan',function ($row)
+                {
+                    return $row->keterangan->keterangan;
+                })
+                ->make(true);
+        }
+        return view('absensi.siswa.show', compact('id'));
     }
 
     /**
