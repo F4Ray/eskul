@@ -38,9 +38,14 @@ Auth::routes();
 All Normal Users Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:siswa'])->group(function () {
+Route::middleware(['auth', 'user-access:siswa,admin'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::group(['as' => 'master_siswa.'], function () {
+        Route::get('detailsiswa/{id}', [MasterSiswaController::class, 'show'])->name('profile');
+        Route::get('detailsiswa/gantifoto/guru/{id}', [MasterSiswaController::class, 'changePicture'])->name('gantifoto');
+        Route::put('simpanfoto/siswa/{id}', [MasterSiswaController::class, 'savePicture'])->name('simpanfoto');
+    });
 });
 
 /*------------------------------------------

@@ -102,6 +102,7 @@ class MasterSiswaController extends Controller
         $siswa->agama = $request->agama;
         $siswa->alamat = $request->alamat;
         $siswa->no_hp = $request->no_hp;
+        $siswa->foto = 'avatar-4.png';
         $siswa->email = $request->email;
         $siswa->id_kelas = $request->kelas;
 
@@ -231,5 +232,34 @@ class MasterSiswaController extends Controller
             }
         }
         return $kelasKosong;
+    }
+
+    public function changePicture($id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        return view('master.siswa.gantifoto', compact('siswa'));
+    }
+
+    public function savePicture(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+    
+           ]);
+        $name = $request->file('image')->getClientOriginalName();
+        $image = explode(".", $name);
+        $image_extension = array_slice($image , -1, 1);
+        $data['image'] = "guru-".$request->id."-".time().'.'.$image_extension[0];
+        
+        $siswa = Siswa::findOrFail($request->id);
+        $fotoLama = $siswa->foto;
+        $siswa->foto = $data['image'];
+        if($fotoLama != "avatar-4.png"){
+        unlink(storage_path('app/public/assets/img/avatar/'.$fotoLama));
+        }
+        $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
+        $siswa->save();
+        return redirect()->route('master_siswa.gantifoto', $id)
+            ->with('success', 'Foto siswa berhasil diubah');
     }
 }

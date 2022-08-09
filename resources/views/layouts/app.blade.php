@@ -78,6 +78,9 @@
                         <li class="{{ setActive('home') }}"><a class="nav-link" href="{{ route('home') }}"><i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></a>
                         </li>
+                        <li class="{{ setActive('detailsiswa') }}"><a class="nav-link" href="{{ route('master_siswa.profile', Auth::user()->siswa->id) }}"><i class="fas fa-user"></i>
+                                <span>Profile</span></a>
+                        </li>
                         @elseif(Auth::check() && Auth::user()->id_role == 2)
                         <li class="{{ setActive('guru/home') }}"><a class="nav-link" href="{{ route('guru.home') }}"><i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></a>

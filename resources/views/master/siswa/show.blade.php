@@ -13,9 +13,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2 mb-3 text-center">
-                        <img src="{{ asset('assets/img/avatar/avatar-4.png') }}" class="ml-auto img-fluid"
+                        <img src="{{ asset('storage/assets/img/avatar/'.$siswa->foto) }}" class="ml-auto img-fluid"
                             height="157.3" width="140">
-                        <a class="btn btn-primary mt-1" href="{{route('master_siswa.edit', $siswa->id)}}"
+                        <a class="btn btn-primary mt-1" href="{{route('master_siswa.gantifoto', $siswa->id)}}"
                             role="button">Edit
                             Gambar</a>
                     </div>
