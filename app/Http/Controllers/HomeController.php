@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AbsensiGuru;
+use App\Models\AbsensiSiswa;
 use App\Models\Guru;
 use App\Models\JadwalPelajaran;
 use App\Models\KeteranganAbsensi;
@@ -29,7 +30,40 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if(auth()->user()->role->role != "siswa"){
+            return response()->json(['You do not have permission to access for this page.']);
+        }
+        $hari = Carbon::now()->isoFormat('dddd');
+        $tanggalHariIni = Carbon::now()->toDateString();
+        $authUser = Auth::user();
+        $jadwalSiswa = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->where('hari', $hari)->orderBy('jam_mulai', 'ASC')->get();
+        $rosterSiswa['Senin'] = $rosterSiswaSenin = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->orderBy('jam_mulai', 'ASC')->where('hari', "Senin")->get();
+        $rosterSiswa['Selasa'] = $rosterSiswaSelasa = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->orderBy('jam_mulai', 'ASC')->where('hari', "Selasa")->get();
+        $rosterSiswa['Rabu'] = $rosterSiswaRabu = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->orderBy('jam_mulai', 'ASC')->where('hari', "Rabu")->get();
+        $rosterSiswa['Kamis'] = $rosterSiswaKamis = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->orderBy('jam_mulai', 'ASC')->where('hari', "Kamis")->get();
+        $rosterSiswa['Jumat'] = $rosterSiswaJumat = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->orderBy('jam_mulai', 'ASC')->where('hari', "Jumat")->get();
+        $rosterSiswa['Sabtu'] = $rosterSiswaSabtu = JadwalPelajaran::where('id_kelas', $authUser->siswa->id_kelas)->orderBy('jam_mulai', 'ASC')->where('hari', "Sabtu")->get();
+
+        $rosterSiswa = (object) $rosterSiswa;
+
+
+        $keteranganAbsensi = KeteranganAbsensi::all();
+        $keterangan = array();
+        foreach ($keteranganAbsensi as $ket) {
+            array_push($keterangan, $ket->keterangan);
+        }
+        $keteranganHadir = AbsensiSiswa::where('id_siswa', Auth::user()->siswa->id)->where('id_keterangan_absensi',1)->get();
+        $keteranganSakit = AbsensiSiswa::where('id_siswa', Auth::user()->siswa->id)->where('id_keterangan_absensi',2)->get();
+        $keteranganIzin = AbsensiSiswa::where('id_siswa', Auth::user()->siswa->id)->where('id_keterangan_absensi',3)->get();
+        $keteranganAlpa = AbsensiSiswa::where('id_siswa', Auth::user()->siswa->id)->where('id_keterangan_absensi',5)->get();
+
+        $detailKeterangan['hadir'] = $keteranganHadir->count();
+        $detailKeterangan['sakit'] = $keteranganSakit->count();
+        $detailKeterangan['izin'] = $keteranganIzin->count();
+        $detailKeterangan['alpa'] = $keteranganAlpa->count();
+
+        $detailKeterangan = (object) $detailKeterangan;
+        return view('dashboard.siswa', compact('jadwalSiswa','keterangan','detailKeterangan','rosterSiswa'));
     }
 
     /**

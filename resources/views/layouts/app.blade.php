@@ -74,8 +74,8 @@
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">MAIN MENU</li>
-                        @if(Auth::check() && Auth::user()->id_role == 1)
-                        <li class="{{ setActive('admin/home') }}"><a class="nav-link" href="{{ route('admin.home') }}"><i class="fas fa-tachometer-alt"></i>
+                        @if(Auth::check() && Auth::user()->id_role == 3)
+                        <li class="{{ setActive('home') }}"><a class="nav-link" href="{{ route('home') }}"><i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></a>
                         </li>
                         @elseif(Auth::check() && Auth::user()->id_role == 2)
