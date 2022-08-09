@@ -74,7 +74,8 @@ class MasterSiswaController extends Controller
      */
     public function store(Request $request)
     {
-         
+        
+        
         $validated = $request->validate(
             [
                 'nama' => 'required',
@@ -110,15 +111,11 @@ class MasterSiswaController extends Controller
         $siswa->email = $request->email;
         $siswa->id_kelas = $request->kelas;
 
-        
-        
-
         $siswa->save();
         $siswa->user()->save($user);
 
         if ($request->kelas) {
-            $jadwalnya = JadwalPelajaran::where('id_kelas', $request->kelas)->pluck("id");
-            
+            $jadwalnya = JadwalPelajaran::where('id_kelas', $request->kelas)->groupBy('id_mata_pelajaran')->pluck('id');
             foreach($jadwalnya as $jadwal){
                 $nilai = new NilaiSiswa;
                 $nilai->id_jadwal = $jadwal;

@@ -45,7 +45,8 @@ Route::middleware(['auth', 'user-access:siswa,admin'])->group(function () {
         Route::get('detailsiswa/{id}', [MasterSiswaController::class, 'show'])->name('profile');
         Route::get('detailsiswa/gantifoto/siswa/{id}', [MasterSiswaController::class, 'changePicture'])->name('gantifoto');
         Route::put('simpanfoto/siswa/{id}', [MasterSiswaController::class, 'savePicture'])->name('simpanfoto');
-
+        Route::get('lihatnilai/{id}', [NilaiSiswaController::class, 'show'])->name('lihatnilai');
+        
     });
     Route::resource('master_siswa', MasterSiswaController::class);
 
@@ -78,7 +79,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 All Admin Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:admin,guru'])->group(function () {
+Route::middleware(['auth', 'user-access:admin,guru,siswa'])->group(function () {
 
     Route::get('/guru/home', [HomeController::class, 'guruHome'])->name('guru.home');
     Route::resource('absensi_guru', AbsensiGuruController::class, ['only' => ['create', 'store', 'index']]);

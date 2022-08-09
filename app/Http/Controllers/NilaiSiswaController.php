@@ -113,9 +113,21 @@ class NilaiSiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        // $data = NilaiSiswa::where('id_siswa', 22)->get();
+        // dd($data);
+        if ($request->ajax()) {
+            $data = NilaiSiswa::where('id_siswa', $request->siswa)->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('mapel',function ($row)
+                {
+                    return $row->jadwal->mapel->nama;
+                })
+                ->make(true);
+        }
+        return view('nilai.show', compact('id'));
     }
 
     /**

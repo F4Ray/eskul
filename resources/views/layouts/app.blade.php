@@ -81,6 +81,8 @@
                         <li class="{{ setActive('detailsiswa') }} {{ setActive('master_siswa') }}"><a class="nav-link" href="{{ route('master_siswa.profile', Auth::user()->siswa->id) }}"><i class="fas fa-user"></i>
                                 <span>Profile</span></a>
                         </li>
+                        <li class="{{ setActive('lihatnilai') }}"><a class="nav-link" href="{{ route('master_siswa.lihatnilai', Auth::user()->siswa->id) }}"><i class="fas fa-chart-bar"></i>Nilai</a>
+                        </li>
                         @elseif(Auth::check() && Auth::user()->id_role == 2)
                         <li class="{{ setActive('guru/home') }}"><a class="nav-link" href="{{ route('guru.home') }}"><i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></a>
@@ -106,6 +108,9 @@
                         </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)
+                        <li class="{{ setActive('admin') }}"><a class="nav-link" href="{{ route('admin.home') }}"><i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span></a>
+                        </li>
                         <li class="dropdown {{ setActive('master_')  }} {{ setActive('absensi_guru') }} {{ setActive('absensi_siswa') }} {{ setActive('nilai') }} {{ setActive('lihat') }}">
 
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Master
