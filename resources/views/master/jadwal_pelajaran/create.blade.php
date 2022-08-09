@@ -49,6 +49,7 @@
                                     <option value="{{ $kelas->id }}">{{ $kelas->kelas }} {{$kelas->rombel }}</option>
                                     @endforeach
                                 </select>
+                                <small class="text-danger">Kelas harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -57,6 +58,7 @@
                                 {!! Form::select('id_mata_pelajaran',[''=>'Pilih kelas terlebih
                                 dahulu'],null,['class'=>'form-control select-mapel'])
                                 !!}
+                                <small class="text-danger">Mata pelajaran harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -65,6 +67,7 @@
                                 {!! Form::select('id_guru',[''=>'Pilih mata pelajaran terlebih
                                 dahulu'],null,['class'=>'form-control select-guru'])
                                 !!}
+                                <small class="text-danger">Guru pengampu harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -74,6 +77,7 @@
                                     <option value="Ganjil">Ganjil</option>
                                     <option value="Genap">Genap</option>
                                 </select>
+                                <small class="text-danger">Semester harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -88,24 +92,28 @@
                                     <option value="Jumat">Jum'at</option>
                                     <option value="Sabtu">Sabtu</option>
                                 </select>
+                                <small class="text-danger">Hari harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Jam Mulai</label>
                                 <input class="form-control" name="jam_mulai" placeholder="08:00" type="time">
+                                <small class="text-danger">Jam mulai harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Jam Selesai</label>
                                 <input name='jam_selesai' type="time" class='form-control'>
+                                <small class="text-danger">Jam selesai harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tahun Ajaran</label>
                                 <input class="form-control" name="tahun_ajaran" placeholder="2022/2023">
+                                <small class="text-danger">Tahun ajaran harus diisi</small>
                             </div>
                         </div>
                     </div>

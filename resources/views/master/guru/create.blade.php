@@ -51,6 +51,7 @@
                             <div class="form-group">
                                 <label>Nama Guru</label>
                                 <input class="form-control" name="nama" placeholder="Rinaldi ...">
+                                <small class="text-danger">Nama guru harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">

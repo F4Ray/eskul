@@ -37,12 +37,14 @@
                                     <option value="VIII">8</option>
                                     <option value="IX">9</option>
                                 </select>
+                                <small class="text-danger">Kelas harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rombongan Belajar</label>
                                 <input class="form-control" name="rombel" placeholder="1">
+                                <small class="text-danger">Rombel harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -65,6 +67,7 @@
                             <div class="form-group">
                                 <label>Tahun Ajaran</label>
                                 <input class="form-control" name="tahun_ajaran" placeholder="2021/2022">
+                                <small class="text-danger">Tahun ajaran harus diisi</small>
                             </div>
                         </div>
 

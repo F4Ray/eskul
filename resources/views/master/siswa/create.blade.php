@@ -45,16 +45,18 @@
                                 @error('nama')
                                 <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger">Nama lengkap harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>NIS</label>
                                 <input class="form-control" name="nis" placeholder="01...">
-                                <small>NIS tidak bisa diubah setelah disimpan</small>
+                                <small>NIS tidak bisa diubah setelah disimpan</small> <br/>
                                 @error('nis')
                                 <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger">NIS harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">

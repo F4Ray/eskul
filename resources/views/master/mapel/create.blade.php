@@ -37,6 +37,7 @@
                             <div class="form-group">
                                 <label>Nama Mata Pelajaran</label>
                                 <input class="form-control" name="nama" placeholder="Bahasa Indonesia">
+                                <small class="text-danger">Nama mata pelajaran harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -48,12 +49,14 @@
                                     <option value="VIII">8</option>
                                     <option value="IX">9</option>
                                 </select>
+                                <small class="text-danger">Kelas harus diisi</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>KKM</label>
                                 <input class="form-control" name="kkm" placeholder="75">
+                                <small class="text-danger">KKM harus diisi</small>
                             </div>
                         </div>
 
