@@ -82,7 +82,7 @@
                             <div class="form-group">
                                 <label>Nilai KKM</label>
                                 <input class="form-control" name="nilai_kkm"
-                                    value="{{ $nilai->nilai_kkm }}">
+                                    value="{{ $nilai->jadwal->mapel->kkm }}" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
