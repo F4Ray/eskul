@@ -240,8 +240,10 @@ class MasterGuruController extends Controller
 
     public function changePicture($id)
     {
-        if ($id != Auth::user()->guru->id) {
-            return redirect()->route('master_guru.index');
+        if (Auth::user()->role->role != 'admin') {
+            if ($id != Auth::user()->guru->id) {
+                return redirect()->route('master_guru.profile', Auth::user()->guru->id);
+            }
         }
         $guru = Guru::findOrFail($id);
         return view('master.guru.gantifoto', compact('guru'));
