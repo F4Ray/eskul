@@ -5,6 +5,19 @@
         <div class="section-header">
             <h1>Master Data</h1>
         </div>
+        <div class="row">
+            @if ($message = Session::get('success'))
+            <div class="col-md-12">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    {!! $message !!}
+                </div>
+            </div>
+            @endif
+        </div>
 
         <div class="card shadow mb-4">
             <div class="card-header">

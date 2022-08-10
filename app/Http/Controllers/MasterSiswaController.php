@@ -82,7 +82,7 @@ class MasterSiswaController extends Controller
                 'nis' => 'required|unique:siswa|numeric',
                 'nisn' => 'numeric|nullable'
             ],
-            [
+            [   
                 'nis.unique' => 'NIS sudah digunakan. Silahkan login menggunakan NIP tersebut untuk melengkapi data.',
                 'nis.numeric' => 'NIS hanya boleh angka.',
                 'nisn.numeric' => 'NISN hanya boleh angka.',
@@ -263,7 +263,7 @@ class MasterSiswaController extends Controller
         }
         $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
         $siswa->save();
-        return redirect()->route('master_siswa.gantifoto', $id)
+        return redirect()->route('master_siswa.show', $id)
             ->with('success', 'Foto siswa berhasil diubah');
     }
 }
