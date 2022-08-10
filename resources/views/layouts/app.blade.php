@@ -89,6 +89,9 @@
                         <li class="{{ setActive('guru/home') }}"><a class="nav-link" href="{{ route('guru.home') }}"><i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></a>
                         </li>
+                        <li class="{{ setActive('detailguru') }} {{ setActive('master_guru/gantifoto/') }} {{ setActive('master_guru/*/edit') }}"><a class="nav-link" href="{{ route('master_guru.profile', Auth::user()->guru->id) }}"><i class="fas fa-user"></i>
+                                <span>Profile </span></a>
+                        </li>
                         <li class="{{ setActive('absensi_guru') }}"><a class="nav-link" href="{{ route('absensi_guru.index') }}"><i class="fas fa-calendar-alt"></i>Absensi</a>
                         </li>
                         <!-- <li class="{{ setActive('absensi_siswa') }}"><a class="nav-link" href="{{ route('absensi_siswa.index') }}"><i class="fas fa-user-friends"></i>Absensi Siswa</a>
@@ -106,7 +109,7 @@
                                 <li class="{{ setActive('absensi_siswa/create') }}"><a class="nav-link" style="padding-left: 41px;" href="{{ route('absensi_siswa.create') }}"><i class="fas fa-user-friends"></i>Isi Absensi Siswa</a>
                             </ul>
                         </li>
-                        <li class="{{ setActive('master_guru') }} "><a class="nav-link" href="{{ route('master_guru.lihatpassword', Auth::user()->guru->id) }}"><i class="fas fa-key"></i>Ubah Password</a>
+                        <li class="{{ setActive('master_guru/*/ubahpassword') }} "><a class="nav-link" href="{{ route('master_guru.lihatpassword', Auth::user()->guru->id) }}"><i class="fas fa-key"></i>Ubah Password</a>
                         </li>
                         @endif
                         @if(Auth::check() && Auth::user()->id_role == 1)

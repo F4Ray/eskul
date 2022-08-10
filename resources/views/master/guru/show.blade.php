@@ -3,9 +3,26 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
+            @if (Auth::user()->role->role == 'admin')
             <h1>Master Data</h1>
+            @else
+            <h1>Profile</h1>
+            @endif
+            
         </div>
-
+        <div class="row">
+            @if ($message = Session::get('success'))
+            <div class="col-md-12">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    {!! $message !!}
+                </div>
+            </div>
+            @endif
+        </div>
         <div class="card shadow mb-4">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">Data Guru</h6>
@@ -60,8 +77,10 @@
                     </div>
 
                 </div>
+                @if (Auth::user()->role->role == 'admin')
                 <a class="btn btn-light" href="{{url()->previous()}}" role="button">Kembali</a>
-                <a class="btn btn-primary ml-2" href="{{route('master_guru.update', $guru->id)}}" role="button">Edit
+                @endif
+                <a class="btn btn-primary ml-2" href="{{route('master_guru.edit', $guru->id)}}" role="button">Edit
                     Data</a>
             </div>
             <!-- <div class="col-md-5">

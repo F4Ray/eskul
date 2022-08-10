@@ -16,7 +16,11 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
+            @if (Auth::user()->role->role == 'admin')
             <h1>Master Data</h1>
+            @else
+            <h1>Profile</h1>
+            @endif
         </div>
 
         <div class="card shadow mb-4">

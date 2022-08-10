@@ -19,6 +19,9 @@ class MasterGuruController extends Controller
      */
     public function index(Request $request)
     {
+        if (Auth::user()->role->role != 'admin') {
+            return redirect()->route('master_guru.profile', Auth::user()->guru->id);
+        }
         // $data = Guru::latest()->get();
         // dd($data->user->username);
         if ($request->ajax()) {
@@ -210,8 +213,13 @@ class MasterGuruController extends Controller
 
         $guru->mapel()->sync($request->id_mata_pelajaran);
 
+        if (Auth::user()->role->role === 'guru') {
+            return redirect()->route('master_guru.profile', $id)
+            ->with('success', 'Data guru berhasil diubah');
+        }else{
         return redirect()->route('master_guru.index')
-            ->with('success', 'Data guru berhasil diedit');
+            ->with('success', 'Data guru berhasil diubah');
+        }
     }
 
     /**
@@ -232,6 +240,9 @@ class MasterGuruController extends Controller
 
     public function changePicture($id)
     {
+        if ($id != Auth::user()->guru->id) {
+            return redirect()->route('master_guru.index');
+        }
         $guru = Guru::findOrFail($id);
         return view('master.guru.gantifoto', compact('guru'));
     }
@@ -255,8 +266,13 @@ class MasterGuruController extends Controller
         }
         $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
         $guru->save();
+        if (Auth::user()->role->role === 'guru') {
+            return redirect()->route('master_guru.profile', $request->id)
+            ->with('success', 'Foto guru berhasil diubah');
+        }else{
         return redirect()->route('master_guru.index')
             ->with('success', 'Foto guru berhasil diubah');
+        }
     }
 
     public function showPassword($id)
