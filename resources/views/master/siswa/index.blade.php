@@ -48,6 +48,7 @@
                                         <th scope="col">NISN</th>
                                         <th scope="col">Kelas</th>
                                         <th scope="col">Detail</th>
+                                        <th scope="col">Password</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
@@ -99,6 +100,12 @@ $(document).ready(function() {
                 {
                     data: 'detail',
                     name: 'detail',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'password',
+                    name: 'password',
                     orderable: false,
                     searchable: false
                 },

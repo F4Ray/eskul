@@ -10,6 +10,7 @@ use App\Models\Kelas;
 use App\Models\NilaiSiswa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class MasterSiswaController extends Controller
 {
@@ -38,6 +39,10 @@ class MasterSiswaController extends Controller
                     $detailBtn = '<a href="' . route('master_siswa.show', $row->id) . '" class="btn btn-block btn-info btn-sm">Lihat Detail</a>';
                     return $detailBtn;
                 })
+                ->addColumn('password', function ($row) {
+                    $detailBtn = '<a href="' . route('master_siswa.lihatpassword', $row->id) . '" class="btn btn-block btn-warning btn-sm">Ubah Password</a>';
+                    return $detailBtn;
+                })
                 ->addColumn('action', function ($row) {
                     $actionBtn = '<a href="' . route('master_siswa.edit', $row->id) . '" class="edit btn btn-block btn-success btn-sm">Edit</a>';
                     $actionBtn .= '<form ' .
@@ -48,7 +53,7 @@ class MasterSiswaController extends Controller
             </form>';
                     return $actionBtn;
                 })
-                ->rawColumns(['action', 'detail'])
+                ->rawColumns(['action', 'detail','password'])
                 ->make(true);
         }
         return view('master.siswa.index');
@@ -265,5 +270,50 @@ class MasterSiswaController extends Controller
         $siswa->save();
         return redirect()->route('master_siswa.show', $id)
             ->with('success', 'Foto siswa berhasil diubah');
+    }
+
+    public function showPassword($id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        $user = User::where('id_profile', $siswa->id)->where('id_role', 3)->first(); 
+        return view('master.siswa.ubahpassword', compact('siswa','user'));
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        $user = User::where('id_profile', $siswa->id)->where('id_role', 3)->first(); 
+        
+        if (Auth::user()->role->role === 'siswa') {
+            $this->validate($request, [
+                'oldpassword' => 'required',
+                'newpassword' => 'required|different:password',
+            ]);
+        }else{
+            $this->validate($request, [
+                'newpassword' => 'required'
+            ]);
+        }
+
+        if (Auth::user()->role->role === 'siswa')  {
+            if (Hash::check($request->oldpassword, $user->password)) { 
+                $user->fill([
+                'password' => Hash::make($request->newpassword)
+                ])->save();
+                $request->session()->flash('success', 'Password berhasil diubah');
+                return redirect()->route('master_siswa.lihatpassword',$id);
+            } else {
+                $request->session()->flash('error', 'Password lama salah');
+                return redirect()->route('master_siswa.lihatpassword',$id);
+            }
+        }else{
+            $user->fill([
+                'password' => Hash::make($request->newpassword)
+                ])->save();
+            $request->session()->flash('success', 'Password berhasil diubah');
+                return redirect()->route('master_siswa.index');
+        }
+       
+        
     }
 }

@@ -48,6 +48,8 @@ Route::middleware(['auth', 'user-access:siswa,admin'])->group(function () {
         Route::put('simpanfoto/siswa/{id}', [MasterSiswaController::class, 'savePicture'])->name('simpanfoto');
         Route::get('lihatnilai/{id}', [NilaiSiswaController::class, 'show'])->name('lihatnilai');
         Route::get('lihatabsen/{id}', [AbsensiSiswaController::class, 'show'])->name('lihatabsen');
+        Route::get('master_siswa/{id}/ubahpassword', [MasterSiswaController::class, 'showPassword'])->name('lihatpassword');
+        Route::put('master_siswa/ubahpassword/{id}', [MasterSiswaController::class, 'changePassword'])->name('ubahpassword');
         
     });
     Route::resource('master_siswa', MasterSiswaController::class);

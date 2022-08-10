@@ -85,6 +85,8 @@
                         </li>
                         <li class="{{ setActive('lihatabsen') }}"><a class="nav-link" href="{{ route('master_siswa.lihatabsen', Auth::user()->siswa->id) }}"><i class="fas fa-calendar-alt"></i>Absensi</a>
                         </li>
+                        <li class="{{ setActive('master_siswa/*/ubahpassword') }} "><a class="nav-link" href="{{ route('master_siswa.lihatpassword', Auth::user()->siswa->id) }}"><i class="fas fa-key"></i>Ubah Password</a>
+                        </li>
                         @elseif(Auth::check() && Auth::user()->id_role == 2)
                         <li class="{{ setActive('guru/home') }}"><a class="nav-link" href="{{ route('guru.home') }}"><i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></a>
