@@ -268,7 +268,7 @@ class MasterGuruController extends Controller
         }
         $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
         $guru->save();
-        return redirect()->route('master_siswa.show', $request->id)
+        return redirect()->route('master_guru.show', $request->id)
             ->with('success', 'Foto siswa berhasil diubah');
     }
 
