@@ -6,7 +6,9 @@ use App\Models\AbsensiGuru;
 use App\Models\AbsensiSiswa;
 use App\Models\Guru;
 use App\Models\JadwalPelajaran;
+use App\Models\Kelas;
 use App\Models\KeteranganAbsensi;
+use App\Models\Siswa;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +75,13 @@ class HomeController extends Controller
      */
     public function adminHome()
     {
-        return view('dashboard.index');
+        $siswa = Siswa::all();
+        $siswa = $siswa->count();
+        $guru = Guru::all();
+        $guru = $guru->count();
+        $kelas = Kelas::all();
+        $kelas = $kelas->count();
+        return view('dashboard.index', compact('guru','siswa','kelas'));
     }
 
     /**

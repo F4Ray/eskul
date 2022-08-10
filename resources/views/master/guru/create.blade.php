@@ -58,7 +58,6 @@
                             <div class="form-group">
                                 <label>NIP</label>
                                 <input class="form-control" name="nip" placeholder="01...">
-                                <small>NIP tidak bisa diubah setelah disimpan</small>
                             </div>
                         </div>
                         <div class="col-md-6">
