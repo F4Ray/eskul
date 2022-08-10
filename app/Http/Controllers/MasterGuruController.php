@@ -268,13 +268,8 @@ class MasterGuruController extends Controller
         }
         $request->file('image')->storeAs('public/assets/img/avatar',$data['image']);
         $guru->save();
-        if (Auth::user()->role->role === 'guru') {
-            return redirect()->route('master_guru.profile', $request->id)
-            ->with('success', 'Foto guru berhasil diubah');
-        }else{
-        return redirect()->route('master_guru.index')
-            ->with('success', 'Foto guru berhasil diubah');
-        }
+        return redirect()->route('master_siswa.show', $request->id)
+            ->with('success', 'Foto siswa berhasil diubah');
     }
 
     public function showPassword($id)
