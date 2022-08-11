@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                Kelas : {{ $kelas->kelas }} <br/>
+                                Kelas : {{ $kelas->kelas }} {{ $kelas->rombel }} <br/>
                                 Wali Kelas : @if ($kelas->wali_kelas == null) - @else {{$kelas->walikelas->nama}} @endif
                             </div>
                         </div>
