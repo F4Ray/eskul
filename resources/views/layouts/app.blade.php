@@ -41,7 +41,14 @@
                 <ul class="navbar-nav navbar-right">
 
                     <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
+                                @if (Auth::user()->role->role == 'admin')
+                                <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
+                                @elseif (Auth::user()->role->role == 'guru')
+                                <img alt="image" src="{{ asset('storage/assets/img/avatar/'.Auth::user()->guru->foto) }}" class="rounded-circle mr-1">
+                                @else
+                                <img alt="image" src="{{ asset('storage/assets/img/avatar/'.Auth::user()->siswa->foto) }}" class="rounded-circle mr-1">
+                                @endif
+                            <!-- <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png') }}" class="rounded-circle mr-1"> -->
                             <div class="d-sm-none d-lg-inline-block">Hi,
                                 @if (Auth::user()->role->role == 'admin')
                                 {{ __('Admin') }}
