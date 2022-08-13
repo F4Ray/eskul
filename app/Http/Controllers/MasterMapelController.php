@@ -47,19 +47,21 @@ class MasterMapelController extends Controller
         if ($mapelTerakhir == null) {
             $jadiKode = '00001';
         } else {
-            $kode = $mapelTerakhir->kode + 1;
+            // dd($mapelTerakhir->kode);
+            $kodepecah = explode("-",$mapelTerakhir->kode);
+            $kode = $kodepecah[1] + 1;            
         }
 
         if (strlen($kode) == 1) {
-            $jadiKode = "0000" . $kode;
+            $jadiKode = "IS-0000" . $kode;
         } else if (strlen($kode) == 2) {
-            $jadiKode = "000" . $kode;
+            $jadiKode = "IS-000" . $kode;
         } else if (strlen($kode) == 3) {
-            $jadiKode = "00" . $kode;
+            $jadiKode = "IS-00" . $kode;
         } else if (strlen($kode) == 4) {
-            $jadiKode = "0" . $kode;
+            $jadiKode = "IS-0" . $kode;
         } else if (strlen($kode) == 5) {
-            $jadiKode = $kode;
+            $jadiKode = "IS-".$kode;
         }
         return view('master.mapel.create', compact('jadiKode'));
     }
