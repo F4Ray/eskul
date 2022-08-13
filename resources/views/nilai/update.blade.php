@@ -88,22 +88,38 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nilai Tugas</label>
+                                @if (Auth::user()->role->role == 'guru' AND $nilai->nilai_tugas != null)
+                                <input class="form-control" name="nilai_tugas"
+                                    value="{{ $nilai->nilai_tugas }}" readonly>
+                                @else
                                 <input class="form-control" name="nilai_tugas"
                                     value="{{ $nilai->nilai_tugas }}">
+                                @endif
+                                
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nilai UTS</label>
+                                @if (Auth::user()->role->role == 'guru' AND $nilai->nilai_uts != null)
+                                <input class="form-control" name="nilai_uts"
+                                    value="{{ $nilai->nilai_uts }}" readonly>
+                                @else
                                 <input class="form-control" name="nilai_uts"
                                     value="{{ $nilai->nilai_uts }}">
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nilai UAS</label>
+                                @if (Auth::user()->role->role == 'guru' AND $nilai->nilai_uas != null)
+                                <input class="form-control" name="nilai_uas"
+                                    value="{{ $nilai->nilai_uas }}" readonly>
+                                @else
                                 <input class="form-control" name="nilai_uas"
                                     value="{{ $nilai->nilai_uas }}">
+                                @endif
                             </div>
                         </div>                        
                         
