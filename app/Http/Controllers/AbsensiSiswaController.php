@@ -141,6 +141,35 @@ class AbsensiSiswaController extends Controller
      */
     public function show(Request $request,$id)
     {
+        $absensi = AbsensiSiswa::where('id_siswa', $id)->get();
+
+        $today = today(); 
+        for($i=1; $i < $today->daysInMonth + 1; ++$i) {
+            $dates[] = \Carbon\Carbon::createFromDate($today->year, $today->month, $i)->format('Y-m-d');
+        }    
+        // foreach ($dates as $date) {
+        //     var_dump($date);
+        // }
+        // dd($date);
+
+        // $grouped = $absensi->mapToGroups(function ($item) {
+        //     return [$item->jadwal->mapel->nama => [$item->tanggal => $item->keterangan->keterangan]];
+        // });
+
+
+        $matkuls = $absensi->mapToGroups(function ($item) {
+            return [$item->jadwal->mapel->nama => [$item->tanggal => $item->keterangan->keterangan]];
+        });
+        $matkuls = $matkuls->jsonserialize();
+        
+        $newAr = array();
+        foreach ($matkuls as $matkul => $key) {
+            foreach ($key as $ka => $keynya) {
+                foreach ($keynya as $hari => $keterangan) {
+                    $newAr[$matkul][$hari] = $keterangan;
+                }
+            }
+        }
         if ($request->ajax()) {
             $data = AbsensiSiswa::where('id_siswa', $request->siswa)->get();
             return Datatables::of($data)
@@ -151,7 +180,7 @@ class AbsensiSiswaController extends Controller
                 })
                 ->make(true);
         }
-        return view('absensi.siswa.show', compact('id'));
+        return view('absensi.siswa.show', compact('id','dates','newAr'));
     }
 
     /**

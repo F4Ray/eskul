@@ -30,4 +30,8 @@ class AbsensiSiswa extends Model
     {
         return $this->belongsTo(KeteranganAbsensi::class, 'id_keterangan_absensi');
     }
+    public function jadwal()
+    {
+        return $this->belongsTo(JadwalPelajaran::class, 'id_jadwal');
+    }
 }

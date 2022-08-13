@@ -84,7 +84,7 @@ input[type="radio"]:checked::before{
                     @else (Auth::user()->role->role == 'guru')
                     {{ __('Isi Absensi Hari Ini') }}
                     @endif -->
-                    Nilai Siswa
+                    Absensi Siswa
                 </h6>
             </div>
             <div class="card-body">
@@ -94,12 +94,22 @@ input[type="radio"]:checked::before{
                                 <table class="table table-bordered" id="table-nilai">
                                     <thead>
                                         <tr class="text-center">
-                                            <th>No</th>
-                                            <th>Tanggal</th>
-                                            <th>Keterangan</th>
+                                            <th>Mata Pelajaran</th>
+                                            @foreach ($dates as $date)
+                                            <th> {{ $date }} </th>
+                                            @endforeach
                                         </tr>
                                     </thead>
-                                    
+                                    <tbody>
+                                        @foreach($newAr as $key => $value)
+                                        <tr>
+                                            <td>{{ $key }}</td>
+                                            @foreach ($dates as $date)
+                                            <td> {{ $value[$date] ?? "N/A"}} </td>
+                                            @endforeach
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -117,7 +127,7 @@ input[type="radio"]:checked::before{
 <script src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    load_data();
+    load_datas();
 
     function load_data() {
         $('#table-nilai').DataTable({
