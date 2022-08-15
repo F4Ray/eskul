@@ -132,7 +132,7 @@ class MasterGuruController extends Controller
 
         return redirect()->route('master_guru.index')
             ->with('success', '<strong>Data dan akun guru berhasil disimpan !</strong> Silahkan login
-            menggunakan NIP dan password 123456, Lalu ubah password.');
+            menggunakan username '. $request->username . ' dan password 123456, Lalu ubah password.');
 
         // dd('Berhasil');
     }

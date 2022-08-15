@@ -130,7 +130,7 @@ class MasterSiswaController extends Controller
 
         return redirect()->route('master_siswa.index')
             ->with('success', '<strong>Data dan akun siswa berhasil disimpan !</strong> Silahkan login
-            menggunakan NIS dan password 123456, Lalu ubah password.');
+            menggunakan username '. $request->nis .' dan password 123456, Lalu ubah password.');
     }
 
     /**
