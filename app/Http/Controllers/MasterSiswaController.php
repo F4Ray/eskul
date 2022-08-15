@@ -192,7 +192,6 @@ class MasterSiswaController extends Controller
         $siswa->no_hp = $request->no_hp;
         $siswa->email = $request->email;
 
-        $siswa->save();
         if ($request->kelas) {
             $jadwalnya = JadwalPelajaran::where('id_kelas', $request->kelas)->pluck("id");
             
@@ -201,7 +200,9 @@ class MasterSiswaController extends Controller
                 $nilai->id_jadwal = $jadwal;
                 $siswa->nilai()->save($nilai);
             }
+            $siswa->id_kelas = $request->kelas;
         } 
+        $siswa->save();
 
         if (Auth::user()->role->role === 'siswa') {
             return redirect()->route('master_siswa.show',$id)
