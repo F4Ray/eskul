@@ -23,9 +23,9 @@ class AbsensiSiswaController extends Controller
      */
     public function index(Request $request)
     {
-        $hari = 'Senin';
+        // $hari = 'Senin';
         
-        // $hari = Carbon::now()->isoFormat('dddd');
+        $hari = Carbon::now()->isoFormat('dddd');
         // $hari = 'Senin';
         
         if (Auth::user()->role->role === 'guru') {
