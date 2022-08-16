@@ -145,6 +145,11 @@ class MasterGuruController extends Controller
      */
     public function show($id)
     {
+        if (Auth::user()->id_role == 2) {
+            if($id != Auth::user()->guru->id){
+            return redirect()->route('master_guru.show', Auth::user()->guru->id);
+           }
+        }
         $guru = Guru::findOrFail($id);
         return view('master.guru.show', compact('guru'));
     }
@@ -157,6 +162,11 @@ class MasterGuruController extends Controller
      */
     public function edit($id)
     {
+        if (Auth::user()->id_role == 2) {
+            if($id != Auth::user()->guru->id){
+            return redirect()->route('master_guru.edit', Auth::user()->guru->id);
+           }
+        }
         $guruTerakhir = User::where('id_role', 2)->latest()->first();
 
         $kode = '0000000000';
@@ -242,7 +252,7 @@ class MasterGuruController extends Controller
     {
         if (Auth::user()->role->role != 'admin') {
             if ($id != Auth::user()->guru->id) {
-                return redirect()->route('master_guru.profile', Auth::user()->guru->id);
+                return redirect()->route('master_guru.gantifoto', Auth::user()->guru->id);
             }
         }
         $guru = Guru::findOrFail($id);
@@ -274,6 +284,11 @@ class MasterGuruController extends Controller
 
     public function showPassword($id)
     {
+        if (Auth::user()->id_role == 2) {
+            if($id != Auth::user()->guru->id){
+            return redirect()->route('master_guru.lihatpassword', Auth::user()->guru->id);
+           }
+        }
         $guru = Guru::findOrFail($id);
         $user = User::where('id_profile', $guru->id)->where('id_role', 2)->first(); 
         return view('master.guru.ubahpassword', compact('guru','user'));

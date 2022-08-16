@@ -105,7 +105,7 @@ input[type="radio"]:checked::before{
                                         <tr>
                                             <td>{{ $key }}</td>
                                             @foreach ($dates as $date)
-                                            <td> {{ $value[$date] ?? "N/A"}} </td>
+                                            <td> {{ $value[$date] ?? "-"}} </td>
                                             @endforeach
                                         </tr>
                                         @endforeach

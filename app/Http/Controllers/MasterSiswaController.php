@@ -141,6 +141,11 @@ class MasterSiswaController extends Controller
      */
     public function show($id)
     {
+        if (Auth::user()->id_role == 3) {
+            if($id != Auth::user()->siswa->id){
+            return redirect()->route('master_siswa.show', Auth::user()->siswa->id);
+           }
+        }
         $siswa = Siswa::findOrFail($id);
         return view('master.siswa.show', compact('siswa'));
     }
@@ -153,6 +158,11 @@ class MasterSiswaController extends Controller
      */
     public function edit($id)
     {
+        if (Auth::user()->id_role == 3) {
+            if($id != Auth::user()->siswa->id){
+            return redirect()->route('master_siswa.edit', Auth::user()->siswa->id);
+           }
+        }
         $siswa = Siswa::findOrFail($id);
         $kelasKosong = $this->ambilKelasKosong();
         $kelases = Kelas::whereIn('id', $kelasKosong)->get();
@@ -221,6 +231,11 @@ class MasterSiswaController extends Controller
      */
     public function destroy($id)
     {
+        if (Auth::user()->id_role == 3) {
+            if($id != Auth::user()->siswa->id){
+            return redirect()->route('master_siswa.show', Auth::user()->siswa->id);
+           }
+        }
         $siswa = Siswa::findOrFail($id);
         $siswa->delete();
         $siswa->user()->delete();
@@ -246,6 +261,11 @@ class MasterSiswaController extends Controller
 
     public function changePicture($id)
     {
+        if (Auth::user()->id_role == 3) {
+            if($id != Auth::user()->siswa->id){
+            return redirect()->route('master_siswa.gantifoto', Auth::user()->siswa->id);
+           }
+        }
         $siswa = Siswa::findOrFail($id);
         return view('master.siswa.gantifoto', compact('siswa'));
     }
@@ -275,6 +295,11 @@ class MasterSiswaController extends Controller
 
     public function showPassword($id)
     {
+        if (Auth::user()->id_role == 3) {
+            if($id != Auth::user()->siswa->id){
+            return redirect()->route('master_siswa.lihatpassword', Auth::user()->siswa->id);
+           }
+        }
         $siswa = Siswa::findOrFail($id);
         $user = User::where('id_profile', $siswa->id)->where('id_role', 3)->first(); 
         return view('master.siswa.ubahpassword', compact('siswa','user'));
