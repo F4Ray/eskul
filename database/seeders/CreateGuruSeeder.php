@@ -16,8 +16,7 @@ class CreateGuruSeeder extends Seeder
     public function run()
     {
         Guru::create([
-            'nip' => '200849280190001',
-            'nama' => 'Alfandi Dachlan'
+            'nama' => 'Ihsanul'
         ]);
         User::create([
             'username' => '00001',
