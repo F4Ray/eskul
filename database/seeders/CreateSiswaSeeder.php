@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Siswa;
+use App\Models\User;
 
 class CreateSiswaSeeder extends Seeder
 {
@@ -15,11 +16,11 @@ class CreateSiswaSeeder extends Seeder
     public function run()
     {
         Siswa::create([
-            'nis' => '0829482291',
-            'nama' => 'Ihsanil'
+            'nis' => '181113693',
+            'nama' => 'Samuel'
         ]);
         User::create([
-            'username' => '0829482291',
+            'username' => '181113693',
             'password' => bcrypt('123456'),
             'id_profile' => 1,
             'id_role' => 3

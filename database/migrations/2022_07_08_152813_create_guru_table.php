@@ -15,7 +15,7 @@ class CreateGuruTable extends Migration
     {
         Schema::create('guru', function (Blueprint $table) {
             $table->id();
-            $table->string('nip');
+            $table->string('nip')->nullable();
             $table->string('nama');
             $table->string('jenis_kelamin')->nullable();
             $table->string('tempat_lahir')->nullable();
